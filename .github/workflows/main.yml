@@ -1,21 +1,21 @@
 name: Test
 
 on:
-  pull_request:
-    branches: [ ]
   push:
     branches: [ main ]
-  create:
-      tags: ['v*'] # Push events to matching v*, i.e. v1.0, v20.15.10
-  workflow_dispatch:
-      publish-www:
-        description: 'Publish on WWW'
-        required: false
-        type: boolean
-      publish-github:
-        description: 'Publish on GitHub'
-        required: false
-        type: boolean
+  pull_request:
+    branches: [ ]
+#  create:
+#      tags: ['v*'] # Push events to matching v*, i.e. v1.0, v20.15.10
+#  workflow_dispatch:
+#      publish-www:
+#        description: 'Publish on WWW'
+#        required: false
+#        type: boolean
+#      publish-github:
+#        description: 'Publish on GitHub'
+#        required: false
+#        type: boolean
 env:
   pkgname: test
   IDENTITY_NAME: ${{ secrets.IDENTITY_NAME }}
@@ -45,5 +45,15 @@ jobs:
         arch: ${{inputs.arch}}
         version: ${{matrix.qt == 6 && '6.2.0' || '5.15.2'}}
         modules: ${{matrix.qt == 6 && 'qtmultimedia' || ''}}
+        
+    - if: ${{ matrix.msystem }}
+      name: Install MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.msystem }}
+        update: true
+        install: |
+            base base-devel p7zip zip git
+    
     - name: Test
       run: echo "Finish"
