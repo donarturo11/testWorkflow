@@ -1,0 +1,49 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ ]
+  push:
+    branches: [ main ]
+  create:
+      tags: ['v*'] # Push events to matching v*, i.e. v1.0, v20.15.10
+  workflow_dispatch:
+      publish-www:
+        description: 'Publish on WWW'
+        required: false
+        type: boolean
+      publish-github:
+        description: 'Publish on GitHub'
+        required: false
+        type: boolean
+env:
+  pkgname: test
+  IDENTITY_NAME: ${{ secrets.IDENTITY_NAME }}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+       include:
+        - { name: "windows-qt6-msvc", os: windows-latest, flags: "", shell: 'pwsh', arch: "win64_msvc2019_64", qt: '6' }
+        - { name: "windows-qt5-msvc", os: windows-latest, flags: "", shell: 'pwsh', arch: "win64_msvc2019_64", qt: '5' }
+        - { name: "windows-qt6-mingw", os: windows-latest, flags: "", shell: 'msys2 {0}', qt: '6', msystem: 'UCRT64' }
+        - { name: "windows-qt5-mingw", os: windows-latest, flags: "", shell: 'msys2 {0}', deps-prefix: "D:/deps", aqt-os: "none", aqt-arch: "win64_mingw73", aqt-prefix: "D:/Qt", aqt-subdir: "mingw73_64", qt-version: '5.12.12', msystem: 'MINGW64' }
+        - { name: "linux-qt6", os: ubuntu-latest, flags: "", shell: 'bash'  }
+        - { name: "linux-qt5", os: ubuntu-22.04, flags: "", shell: 'bash' }
+        - { name: "macos-qt6-universal", os: macos-latest, flags: "-DCMAKE_OSX_ARCHITECTURES=\"x86_64;arm64\"", shell: 'bash', deps-prefix: "/Users/runner/deps" }
+        - { name: "macos-qt5-legacy", os: macos-latest, flags: "-DCMAKE_OSX_DEPLOYMENT_TARGET=\"10.13\" -DCMAKE_OSX_ARCHITECTURES=\"x86_64\"", shell: 'bash' }
+    runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        shell: ${{matrix.shell}}
+
+    steps:
+    - if: ${{ matrix.arch }}
+      uses: jurplel/install-qt-action@v3
+      with:
+        arch: ${{inputs.arch}}
+        version: ${{matrix.qt == 6 && '6.2.0' || '5.15.2'}}
+        modules: ${{matrix.qt == 6 && 'qtmultimedia' || ''}}
+    - name: Test
+      run: echo "Finish"
