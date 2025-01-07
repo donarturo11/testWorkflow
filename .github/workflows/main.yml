@@ -39,7 +39,7 @@ jobs:
         shell: ${{matrix.shell}}
 
     steps:
-    - if: ${{ matrix.arch || runner.os == 'macos' }}
+    - if: ${{ contains( ['msvc', 'macos'], matrix.name ) }}
       uses: jurplel/install-qt-action@v3
       with:
         arch: ${{inputs.arch}}
