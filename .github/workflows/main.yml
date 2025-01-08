@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
        qt: [5, 6]
-       name: [msvc, mingw, linux, macos]
+       name: ["msvc", "mingw", "linux", "macos"]
 #       include:
 #        - { name: "windows-msvc", os: windows-latest, flags: "", shell: 'pwsh', arch: "win64_msvc2019_64", qt: '6', aqt: true }
 #        - { name: "windows-mingw", os: windows-latest, flags: "", shell: 'msys2 {0}', qt: '6', msystem: 'UCRT64' }
