@@ -25,12 +25,11 @@ jobs:
     strategy:
       matrix:
        qt: [5, 6]
-       name: ["msvc", "mingw", "linux", "macos"]
-#       include:
-#        - { name: "windows-msvc", os: windows-latest, flags: "", shell: 'pwsh', arch: "win64_msvc2019_64", qt: '6', aqt: true }
-#        - { name: "windows-mingw", os: windows-latest, flags: "", shell: 'msys2 {0}', qt: '6', msystem: 'UCRT64' }
-#        - { name: "linux", os: ubuntu-latest, flags: "", shell: 'bash'  }
-#        - { name: "macos", os: macos-latest, flags: "-DCMAKE_OSX_ARCHITECTURES=\"x86_64;arm64\"", shell: 'bash', aqt: true }
+       include:
+        - { name: "windows-msvc", os: windows-latest, flags: "", shell: 'pwsh', arch: "win64_msvc2019_64", aqt: true }
+        - { name: "windows-mingw", os: windows-latest, flags: "", shell: 'msys2 {0}', msystem: 'UCRT64' }
+        - { name: "linux", os: ubuntu-latest, flags: "", shell: 'bash'  }
+        - { name: "macos", os: macos-latest, flags: "-DCMAKE_OSX_ARCHITECTURES=\"x86_64;arm64\"", shell: 'bash', aqt: true }
 
     runs-on: ${{matrix.os}}
     defaults:
