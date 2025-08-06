@@ -37,11 +37,13 @@ jobs:
       shell: bash
       run: |
         mkdir -p $RUNNER_WORKSPACE/artifacts/
-        echo '${{ toJSON(matrix) }}' > $RUNNER_WORKSPACE/artifacts/matrix.json
+        echo '${{ toJSON(matrix) }}' > $RUNNER_WORKSPACE/artifacts/matrix-${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}.json
+        echo '${{ toJSON(github) }}' > $RUNNER_WORKSPACE/artifacts/github-${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}.json
+        echo '${{ toJSON(runner) }}' > $RUNNER_WORKSPACE/artifacts/runner-${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}.json
     - uses: actions/upload-artifact@v4
       with:
-        name: "matrix-info"
-        path: "${{ runner.workspace }}/artifacts"
+        name: "${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}"
+        path: "${{ runner.workspace }}/artifacts/*"
   all:
     needs: build
     runs-on: ubuntu-latest
