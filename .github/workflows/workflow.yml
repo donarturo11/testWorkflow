@@ -60,7 +60,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: temp*-macos-*
+          name: "temp*-macos-*"
           path: ${{ runner.workspace }}/artifacts
       - uses: geekyeggo/delete-artifact@v5
         with:
