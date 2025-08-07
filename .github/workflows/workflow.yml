@@ -66,9 +66,9 @@ jobs:
           name: temp*-macos-*
       - run: |
           cd $RUNNER_WORKSPACE/artifacts
-          for i in *;
+          for i in *-macos-*
           do
-            mv -v $i ${i#temp-*}
+            mv -v $i $i-signed
           done
       - name: Upload signed artifacts
         uses: actions/upload-artifact@v4
