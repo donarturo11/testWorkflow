@@ -94,7 +94,7 @@ jobs:
           cd $RUNNER_WORKSPACE/artifacts
           for i in *;
           do
-            mv -v $i ${i#temp-*}
+            [[ ! $i == ${i#temp-*} ]] && mv -v $i ${i#temp-*}
           done
       - name: Uploading all
         uses: actions/upload-artifact@v4
