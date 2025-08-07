@@ -5,6 +5,7 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  PROJECT_NAME: test
   BUILD_TYPE: Release
 
 jobs:
@@ -29,21 +30,26 @@ jobs:
     defaults:
       run:
         shell: bash
-    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: ${{ matrix.profile.name }}-qt${{ matrix.qt-version }}
-      shell: bash
+    - shell: bash
       run: |
+        export FULL_NAME=${{ env.PROJECT_NAME }}-${{ matrix.name }}-qt${{ matrix.qt-version }}
         mkdir -p $RUNNER_WORKSPACE/artifacts/
-        echo '${{ toJSON(matrix) }}' > $RUNNER_WORKSPACE/artifacts/matrix-${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}.json
-        echo '${{ toJSON(github) }}' > $RUNNER_WORKSPACE/artifacts/github-${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}.json
-        echo '${{ toJSON(runner) }}' > $RUNNER_WORKSPACE/artifacts/runner-${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}.json
-    - uses: actions/upload-artifact@v4
+        echo ARTIFACTS_DIR=$RUNNER_WORKSPACE/artifacts/ >> $GITHUB_ENV
+        echo FULL_NAME=$FULL_NAME >> $GITHUB_ENV
+    - run: |
+        echo "::notice::Save to $ARTIFACTS_DIR"
+        env | sort
+        echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
+        echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
+        echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
+    - name: Uploading ${{ env.FULL_NAME }}
+      uses: actions/upload-artifact@v4
       with:
-        name: "${{ github.job }}-${{ matrix.name }}-${{ matrix.qt-version }}"
-        path: "${{ runner.workspace }}/artifacts/*"
+        name: "${{ env.FULL_NAME }}"
+        path: "${{ env.ARTIFACTS_DIR }}/*"
   all:
     needs: build
     runs-on: ubuntu-latest
@@ -51,5 +57,9 @@ jobs:
       run:
         shell: bash
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.workspace }}/artifacts
       - run: |
-          echo
+          find $RUNNER_WORKSPACE
