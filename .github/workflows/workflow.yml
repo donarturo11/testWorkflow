@@ -65,7 +65,7 @@ jobs:
         with:
           name: temp-*
       - name: Uploading all
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: "common-artifacts"
           path: ${{ runner.workspace }}/artifacts
