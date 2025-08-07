@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "macos-artifacts"
-          path: ${{ runner.workspace }}/artifacts
+          path: ${{ runner.workspace }}/artifacts/*-macos-*
 
   all:
     needs: [ build, sign-macos-packages ]
@@ -92,9 +92,9 @@ jobs:
           name: temp-*
       - run: |
           cd $RUNNER_WORKSPACE/artifacts
-          for i in *;
+          for i in temp-*;
           do
-            [[ ! $i == ${i#temp-*} ]] && mv -v $i ${i#temp-*}
+            mv -v $i ${i#temp-*}
           done
       - name: Uploading all
         uses: actions/upload-artifact@v4
