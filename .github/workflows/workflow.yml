@@ -50,8 +50,35 @@ jobs:
       with:
         name: "temp-${{ env.FULL_NAME }}"
         path: "${{ env.ARTIFACTS_DIR }}/*"
-  all:
+  sign-macos-packages:
     needs: build
+    runs-on: macos-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: temp*-macos-*
+          path: ${{ runner.workspace }}/artifacts
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: temp*-macos-*
+      - run: |
+          cd $RUNNER_WORKSPACE/artifacts
+          for i in *;
+          do
+            mv -v $i ${i#temp-*}
+          done
+      - name: Upload signed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "macos-artifacts"
+          path: ${{ runner.workspace }}/artifacts
+
+  all:
+    needs: [ build, sign-macos-packages ]
     runs-on: ubuntu-latest
     defaults:
       run:
