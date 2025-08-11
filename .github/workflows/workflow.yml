@@ -39,12 +39,42 @@ jobs:
         mkdir -p $RUNNER_WORKSPACE/artifacts/
         echo ARTIFACTS_DIR=$RUNNER_WORKSPACE/artifacts/ >> $GITHUB_ENV
         echo FULL_NAME=$FULL_NAME >> $GITHUB_ENV
+    - name: setup mingw
+      if: ${{ matrix.name == 'windows-mingw' }}
+      run:
+        echo 'C:/msys64/bin' >> $GITHUB_PATH
+        echo 'C:/msys64/usr/bin' >> $GITHUB_PATH
+        echo 'C:/msys64/ucrt64/bin' >> $GITHUB_PATH
+        echo MSYSTEM=ucrt64 >> $GITHUB_ENV
+        echo MSYS2_PATH_TYPE=inherit >> $GITHUB_ENV
+        echo CHERE_INVOKING=1 >> $GITHUB_ENV
+        C:/msys64/bin/bash -lc 'pacman -Syu --noconfirm'
+        C:/msys64/bin/bash -lc 'pacman -S pacboy --noconfirm'
+    - name: setup vcpkg
+      if: ${{ matrix.name == 'windows-msvc' }}
+        CWD=$(cd $RUNNER_WORKSPACE; pwd)
+        cd $CWD
+        VCPKG_ROOT=$CWD/vcpkg
+        [ ! -e $VCPKG_ROOT ] && mkdir -p $VCPKG_ROOT
+        curl -qL https://github.com/microsoft/vcpkg/archive/refs/tags/2025.07.25.tar.gz -o vcpkg.tar.gz &> /dev/null
+        tar -xzf vcpkg.tar.gz --strip-components=1 -C $VCPKG_ROOT
+        echo VCPKG_ROOT=${VCPKG_ROOT} >> $GITHUB_ENV
+        echo VCPKG_MAX_CONCURRENCY=20 >> $GITHUB_ENV
+        bash $VCPKG_ROOT/bootstrap-vcpkg.sh
+        URL_ROOT=https://freeshell.de/arturwro/pub/vcpkg/ci-github-actions
+        REPO_FORMAT="{triplet}/{name}_{version}_{triplet}.zip#{sha}"
+        echo VCPKG_BINARY_SOURCES="clear;http,$URL_ROOT/$REPO_FORMAT,read" >> $GITHUB_ENV
+    - name: setup msvc
+      if: ${{ matrix.name == 'windows-msvc' }}
+      uses: egor-tensin/vs-shell@v2
+      with:
+        arch: x64
     - run: |
         echo "::notice::Save to $ARTIFACTS_DIR"
-        env | sort
         echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
         echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
         echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
+        env | sort >> $ARTIFACTS_DIR/environment
     - name: Uploading ${{ env.FULL_NAME }}
       uses: actions/upload-artifact@v4
       with:
