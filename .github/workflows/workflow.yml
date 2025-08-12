@@ -41,7 +41,7 @@ jobs:
         echo FULL_NAME=$FULL_NAME >> $GITHUB_ENV
     - name: setup mingw variables
       if: ${{ matrix.name == 'windows-mingw' }}
-      run:
+      run: |
         export PATH=/c/msys64/usr/bin:$PATH
         export MSYSTEM=ucrt64
         export MSYS2_PATH_TYPE=inherit
