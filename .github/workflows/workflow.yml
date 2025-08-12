@@ -42,18 +42,12 @@ jobs:
     - name: setup mingw variables
       if: ${{ matrix.name == 'windows-mingw' }}
       run:
-        echo "C:\\msys64\\bin" >> $GITHUB_PATH
-        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-        echo "C:\\msys64\\ucrt64\\bin" >> $GITHUB_PATH
-        echo MSYSTEM=ucrt64 >> $GITHUB_ENV
-        echo MSYS2_PATH_TYPE=inherit >> $GITHUB_ENV
-        echo CHERE_INVOKING=1 >> $GITHUB_ENV
-    - name: setup mingw
-      shell: bash
-      if: ${{ matrix.name == 'windows-mingw' }}
-      run: |
-        pacman -Syu --noconfirm
-        pacman -S pacboy --noconfirm
+        export PATH=/c/msys64/usr/bin:$PATH
+        export MSYSTEM=ucrt64
+        export MSYS2_PATH_TYPE=inherit
+        export CHERE_INVOKING=1
+        bash -lc 'pacman -Syu --noconfirm'
+        bash -lc 'pacman -S pacboy --noconfirm'
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
