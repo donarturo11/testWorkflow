@@ -40,6 +40,7 @@ jobs:
         echo ARTIFACTS_DIR=$RUNNER_WORKSPACE/artifacts/ >> $GITHUB_ENV
         echo FULL_NAME=$FULL_NAME >> $GITHUB_ENV
     - uses: msys2/setup-msys2@v2
+      if: ${{ matrix.name == 'windows-mingw' }}
       with:
         update: true
         cache: true
