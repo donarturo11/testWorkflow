@@ -50,9 +50,8 @@ jobs:
     - name: setup mingw
       if: ${{ matrix.name == 'windows-mingw' }}
       run: |
-        C:\\msys64\\usr\\bin\\bash -lc ''
-        C:\\msys64\\usr\\bin\\bash -lc 'pacman -Syuu --noconfirm'
-        C:\\msys64\\usr\\bin\\bash -lc 'pacman -S pacboy --noconfirm'
+        pacman -Syuu --noconfirm
+        pacman -S pactoys --noconfirm
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
