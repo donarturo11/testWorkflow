@@ -50,6 +50,7 @@ jobs:
     - name: setup mingw
       if: ${{ matrix.name == 'windows-mingw' }}
       run: |
+        export PATH=/c/msys64/usr/bin:$PATH
         pacman -Syu --noconfirm
         pacman -S pacboy --noconfirm
     - name: setup vcpkg
