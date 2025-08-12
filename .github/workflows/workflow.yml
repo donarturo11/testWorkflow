@@ -47,9 +47,6 @@ jobs:
         echo MSYSTEM=ucrt64 >> $GITHUB_ENV
         echo MSYS2_PATH_TYPE=inherit >> $GITHUB_ENV
         echo CHERE_INVOKING=1 >> $GITHUB_ENV
-    - name: setup mingw
-      if: ${{ matrix.name == 'windows-mingw' }}
-      run: |
         pacman -Syuu --noconfirm
         pacman -S pactoys --noconfirm
     - name: setup vcpkg
