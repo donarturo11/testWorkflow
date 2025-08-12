@@ -52,7 +52,7 @@ jobs:
       run: | 
         pacman -Syuu --noconfirm
         pacman -S pactoys  --noconfirm
-      pacboy -S toolchain:u --noconfirm
+        pacboy -S toolchain:u --noconfirm
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
