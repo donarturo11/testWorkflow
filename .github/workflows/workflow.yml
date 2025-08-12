@@ -42,6 +42,7 @@ jobs:
     - name: setup mingw variables
       if: ${{ matrix.name == 'windows-mingw' }}
       run:
+        echo "C:\\msys64\\bin" >> $GITHUB_PATH
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo "C:\\msys64\\ucrt64\\bin" >> $GITHUB_PATH
         echo MSYSTEM=ucrt64 >> $GITHUB_ENV
