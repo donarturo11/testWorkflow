@@ -49,6 +49,7 @@ jobs:
         echo MSYS2_PATH_TYPE=inherit >> $GITHUB_ENV
         echo CHERE_INVOKING=1 >> $GITHUB_ENV
     - name: setup mingw
+      shell: bash
       if: ${{ matrix.name == 'windows-mingw' }}
       run: |
         pacman -Syu --noconfirm
