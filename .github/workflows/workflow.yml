@@ -26,7 +26,7 @@ jobs:
           - name: "macos-x86_64"
             os: "macos-13"
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     defaults:
       run:
         shell: bash
@@ -39,13 +39,20 @@ jobs:
         mkdir -p $RUNNER_WORKSPACE/artifacts/
         echo ARTIFACTS_DIR=$RUNNER_WORKSPACE/artifacts/ >> $GITHUB_ENV
         echo FULL_NAME=$FULL_NAME >> $GITHUB_ENV
-    - uses: msys2/setup-msys2@v2
+    - name: setup mingw variables
       if: ${{ matrix.name == 'windows-mingw' }}
-      with:
-        msystem: UCRT64
-        update: true
-        cache: true
-        install: git mingw-w64-ucrt-x86_64-gcc cmake
+      run: |
+        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        echo "C:\\msys64\\ucrt64\\bin" >> $GITHUB_PATH
+        echo MSYSTEM=ucrt64 >> $GITHUB_ENV
+        echo MSYS2_PATH_TYPE=inherit >> $GITHUB_ENV
+        echo CHERE_INVOKING=1 >> $GITHUB_ENV
+    - name: setup mingw
+      if: ${{ matrix.name == 'windows-mingw' }}
+      run: |
+        C:\\msys64\\usr\\bin\\bash -lc ''
+        C:\\msys64\\usr\\bin\\bash -lc 'pacman -Syuu --noconfirm'
+        C:\\msys64\\usr\\bin\\bash -lc 'pacman -S pacboy --noconfirm'
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
