@@ -33,22 +33,17 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    - shell: bash
+    - name: Setup common environment
       run: |
-        export FULL_NAME=${{ env.PROJECT_NAME }}-${{ matrix.name }}-qt${{ matrix.qt-version }}
-        mkdir -p $RUNNER_WORKSPACE/artifacts/
-        echo ARTIFACTS_DIR=$RUNNER_WORKSPACE/artifacts/ >> $GITHUB_ENV
-        echo FULL_NAME=$FULL_NAME >> $GITHUB_ENV
-    - uses: msys2/setup-msys2@v2
+         echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> GITHUB_ENV
+    - name: Setup MinGW
+      uses: msys2/setup-msys2@v2
       if: ${{ matrix.name == 'windows-mingw' }}
       with:
         update: true
         cache: true
         msystem: ucrt64
         pacboy: toolchain cmake
-    - name: Test bash
-      run: |
-        which bash 
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
@@ -69,66 +64,22 @@ jobs:
       uses: egor-tensin/vs-shell@v2
       with:
         arch: x64
-    - run: |
+    - name: install-dependencies
+      run: echo ""
+    - name: setup control artifacts
+      run: |
+        CWD=$(cd $RUNNER_WORKSPACE; pwd)
+        export $ARTIFACTS_DIR=$CWD/artifacts
+        [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
         echo "::notice::Save to $ARTIFACTS_DIR"
         echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
         echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
         echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
         env | sort >> $ARTIFACTS_DIR/environment
+        echo "ARTIFACTS_DIR=$ARTIFACTS_DIR" >> $GITHUB_ENV
+
     - name: Uploading ${{ env.FULL_NAME }}
       uses: actions/upload-artifact@v4
       with:
-        name: "temp-${{ env.FULL_NAME }}"
+        name: "${{ env.FULL_NAME }}"
         path: "${{ env.ARTIFACTS_DIR }}/*"
-  sign-macos-packages:
-    needs: build
-    runs-on: macos-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ${{ runner.workspace }}/artifacts
-      - uses: geekyeggo/delete-artifact@v5
-        with:
-          name: temp*-macos-*
-      - run: |
-          cd $RUNNER_WORKSPACE/artifacts
-          for i in *-macos-*
-          do
-            mv -v $i $i-signed
-          done
-      - name: Upload signed artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: "macos-artifacts"
-          path: ${{ runner.workspace }}/artifacts/*-macos-*
-
-  all:
-    needs: [ build, sign-macos-packages ]
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ${{ runner.workspace }}/artifacts
-      - uses: geekyeggo/delete-artifact@v5
-        with:
-          name: temp-*
-      - run: |
-          cd $RUNNER_WORKSPACE/artifacts
-          for i in temp-*;
-          do
-            mv -v $i ${i#temp-*}
-          done
-      - name: Uploading all
-        uses: actions/upload-artifact@v4
-        with:
-          name: "common-artifacts"
-          path: ${{ runner.workspace }}/artifacts
-          
