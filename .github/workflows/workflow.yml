@@ -2,14 +2,15 @@ name: Build common deps
 
 on:
   workflow_dispatch:
-    publish-www:
-      description: 'Publish on WWW'
-      required: false
-      type: boolean
-    build_type:
-      description: 'Build type'
-      required: false
-      type: string
+    inputs:
+      publish-www:
+        description: 'Publish on WWW'
+        required: false
+        type: boolean
+      build_type:
+        description: 'Build type'
+        required: false
+        type: string
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   PROJECT_NAME: test
