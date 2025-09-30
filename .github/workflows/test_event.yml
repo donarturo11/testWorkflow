@@ -41,7 +41,6 @@ jobs:
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
         echo "::notice::Save to $ARTIFACTS_DIR"
         echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
-        echo '${{ toJSON(event) }}' >> $ARTIFACTS_DIR/event.json
         echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
         echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
         env | sort >> $ARTIFACTS_DIR/environment
