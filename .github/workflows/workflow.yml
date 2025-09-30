@@ -7,10 +7,13 @@ on:
         description: 'Publish on WWW'
         required: false
         type: boolean
-      build_type:
+      build-type:
         description: 'Build type'
         required: false
         type: string
+      test-env:
+        type: environment
+        required: false
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   PROJECT_NAME: test
