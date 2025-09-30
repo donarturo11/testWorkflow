@@ -2,11 +2,11 @@ name: Build common deps
 
 on:
   workflow_dispatch:
-    - publish-www:
+    publish-www:
       description: 'Publish on WWW'
       required: false
       type: boolean
-    - build_type:
+    build_type:
       description: 'Build type'
       required: false
       type: string
