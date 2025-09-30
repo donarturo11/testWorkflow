@@ -78,7 +78,7 @@ jobs:
     - name: setup control artifacts
       run: |
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        export $ARTIFACTS_DIR=$CWD/artifacts
+        export ARTIFACTS_DIR=$CWD/artifacts
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
         echo "::notice::Save to $ARTIFACTS_DIR"
         echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
