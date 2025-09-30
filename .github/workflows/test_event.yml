@@ -2,9 +2,9 @@ name: Test event
 
 on:
   pull_request:
-    branches: ['*']
+    branches: [ ]
   push:
-    branches: [ rewrite-workflow ]
+    branches: [ ]
   create:
       tags: ['v*']
   workflow_dispatch:
