@@ -43,7 +43,8 @@ jobs:
       uses: actions/checkout@v4
     - name: Setup common environment
       run: |
-         echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> GITHUB_ENV
+         CWD=$(cd $RUNNER_WORKSPACE; pwd)
+         echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
     - name: Setup MinGW
       uses: msys2/setup-msys2@v2
       if: ${{ matrix.name == 'windows-mingw' }}
@@ -85,7 +86,8 @@ jobs:
         echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
         echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
         env | sort >> $ARTIFACTS_DIR/environment
-        echo "ARTIFACTS_DIR=$ARTIFACTS_DIR" >> $GITHUB_ENV
+        echo "ARTIFACTS_DIR=$ARTIFACTS_DIR" >> $CWD/project.env
+        cat $CWD/project.env >> $GITHUB_ENV
 
     - name: Uploading ${{ env.FULL_NAME }}
       uses: actions/upload-artifact@v4
