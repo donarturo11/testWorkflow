@@ -11,10 +11,9 @@ on:
         description: 'Build type'
         required: false
         type: string
-      test-env:
+      BUILD_TYPE:
         type: environment
-        required: false
-        - ENV_TEST
+        
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   PROJECT_NAME: test
