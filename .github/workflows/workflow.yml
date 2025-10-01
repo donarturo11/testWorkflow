@@ -43,12 +43,15 @@ jobs:
         shell: bash
     steps:
     - name: CWD before checkout
-      run: echo "PWD=$PWD"
+      run: |
+         mkdir ${RUNNER_WORKSPACE}/out
+         env >> ${RUNNER_WORKSPACE}/out/${0}.env
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Setup common environment
       run: |
-         echo "PWD=$(pwd)"
+         mkdir ${RUNNER_WORKSPACE}/out
+         env >> ${RUNNER_WORKSPACE}/out/${0}.env
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
     - name: Setup MinGW
@@ -62,7 +65,7 @@ jobs:
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
-        echo "PWD=$(pwd)"
+        env >> ${RUNNER_WORKSPACE}/out/${0}.env
         #CWD=$(cd $RUNNER_WORKSPACE; pwd)
         #cd $CWD
         #VCPKG_ROOT=$CWD/vcpkg
@@ -84,9 +87,9 @@ jobs:
       run: echo "PWD=$(pwd)"
     - name: setup control artifacts
       run: |
-        echo "PWD=$(pwd)"
+        env >> ${RUNNER_WORKSPACE}/out/${0}.env
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        export ARTIFACTS_DIR=$CWD/artifacts
+        export ARTIFACTS_DIR=$CWD/out
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
         echo "::notice::Save to $ARTIFACTS_DIR"
         echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
