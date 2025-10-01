@@ -105,4 +105,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "${{ env.FULL_NAME }}"
-        path: "${{ env.ARTIFACTS_DIR }}/*"
+        path: "${{ runner.workspace }}/out/*"
