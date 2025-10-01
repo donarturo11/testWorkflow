@@ -48,7 +48,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Setup common environment
       run: |
-         echo "PWD=$PWD"
+         echo "PWD=$(pwd)"
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
     - name: Setup MinGW
@@ -62,7 +62,7 @@ jobs:
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
-        echo "PWD=$PWD"
+        echo "PWD=$(pwd)"
         #CWD=$(cd $RUNNER_WORKSPACE; pwd)
         #cd $CWD
         #VCPKG_ROOT=$CWD/vcpkg
@@ -81,10 +81,10 @@ jobs:
       with:
         arch: x64
     - name: install-dependencies
-      run: echo ""
+      run: echo "PWD=$(pwd)"
     - name: setup control artifacts
       run: |
-        echo "PWD=$PWD"
+        echo "PWD=$(pwd)"
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
         export ARTIFACTS_DIR=$CWD/artifacts
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
