@@ -44,7 +44,7 @@ jobs:
     steps:
     - name: CWD before checkout
       run: |
-         mkdir ${RUNNER_WORKSPACE}/out
+         mkdir -vp ${RUNNER_WORKSPACE}/out
          env >> ${RUNNER_WORKSPACE}/out/${0}.env
     - name: Checkout repository
       uses: actions/checkout@v4
