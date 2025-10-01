@@ -46,13 +46,13 @@ jobs:
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          mkdir -vp ${CWD}/out
-         env >> ${CWD}/out/${0}.env
+         env >> ${CWD}/out/$(basename $0).env
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Setup common environment
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
-         env >> ${CWD}/out/${0}.env
+         env >> ${CWD}/out/$(basename $0).env
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
     - name: Setup MinGW
@@ -67,7 +67,7 @@ jobs:
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        env >> ${CWD}/out/${0}.env
+        env >> ${CWD}/out/$(basename $0).env
         #CWD=$(cd $RUNNER_WORKSPACE; pwd)
         #cd $CWD
         #VCPKG_ROOT=$CWD/vcpkg
@@ -90,7 +90,7 @@ jobs:
     - name: setup control artifacts
       run: |
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        env >> ${CWD}/out/${0}.env
+        env >> ${CWD}/out/$(basename $0).env
         export ARTIFACTS_DIR=$CWD/out
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
         echo "::notice::Save to $ARTIFACTS_DIR"
