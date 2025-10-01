@@ -43,11 +43,12 @@ jobs:
         shell: bash
     steps:
     - name: CWD before checkout
-      run: pwd
+      run: echo "PWD=$PWD"
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Setup common environment
       run: |
+         echo "PWD=$PWD"
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
     - name: Setup MinGW
@@ -61,7 +62,7 @@ jobs:
     - name: setup vcpkg
       if: ${{ matrix.name == 'windows-msvc' }}
       run: |  
-        echo
+        echo "PWD=$PWD"
         #CWD=$(cd $RUNNER_WORKSPACE; pwd)
         #cd $CWD
         #VCPKG_ROOT=$CWD/vcpkg
@@ -83,6 +84,7 @@ jobs:
       run: echo ""
     - name: setup control artifacts
       run: |
+        echo "PWD=$PWD"
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
         export ARTIFACTS_DIR=$CWD/artifacts
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
