@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: bash
+        shell: bash --login {0}
     steps:
     - name: CWD before checkout
       run: |
