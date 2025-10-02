@@ -52,7 +52,7 @@ jobs:
     - name: Setup common environment
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
-         which direnv || echo ""
+         which direnv && echo "direnv FOUND" || echo "direnv not FOUND"
          env >> ${CWD}/out/$(basename $0).env
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
