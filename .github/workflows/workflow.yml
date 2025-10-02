@@ -56,7 +56,10 @@ jobs:
         case ${kernel} in
           linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
           darwin*) brew install direnv ;;
-          *) curl -sfL https://direnv.net/install.sh | bash ;;
+          *)
+            git clone https://github.com/direnv/direnv
+            bash ./direnv/install.sh
+            ;;
         esac
         echo 'eval "$(direnv hook bash)"' >> $HOME/.bashrc
  
