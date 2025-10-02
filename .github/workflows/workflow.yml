@@ -44,7 +44,16 @@ jobs:
     steps:
     - name: Setup direnv
       run: |
-        curl -sfL https://raw.githubusercontent.com/direnv/direnv/refs/tags/v2.37.1/install.sh | bash
+        kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
+        case ${kernel} in:
+          mingw*) win-get install direnv ;;
+          linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
+          darwin*) brew install direnv ;;
+          *) curl -sfL https://direnv.net/install.sh | bash ;;
+        esac
+        
+    - name: run setup settings
+      run: |
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
         . ~/.bashrc
         cd $RUNNER_WORKSPACE
