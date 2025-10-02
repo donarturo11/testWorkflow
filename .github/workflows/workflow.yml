@@ -63,8 +63,8 @@ jobs:
             bash ./direnv/install.sh
             ;;
         esac
-        echo 'eval "$(direnv hook bash)"' >> $HOME/.bashrc
- 
+        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        cat ~/.bashrc 
         
     - name: run setup settings
       run: |
@@ -74,12 +74,12 @@ jobs:
         direnv allow .
     - name: CWD before checkout
       run: |
-         source ~/.bashrc
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          mkdir -vp ${CWD}/out
          (cd ~; pwd)
          find $CWD
          env >> ${CWD}/out/$(basename $0).env
+         cd $GITHUB_WORKSPACE
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Setup common environment
