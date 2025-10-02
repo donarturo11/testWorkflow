@@ -46,19 +46,14 @@ jobs:
       if: ${{ runner.os == 'Windows' }}
       run: |
         export PATH="/c/msys64/usr/bin:$PATH"
-        curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /c/msys64/etc/pacman.conf
-        pacman -Syu --noconfirm
-        pacman -S --noconfirm git
+        bash -lc 'curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /etc/pacman.conf'
+        bash -lc 'pacman -Syu --noconfirm'
+        bash -lc 'pacman -S --noconfirm git'
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
     - name: Setup direnv
       run: |
         echo "HOME: $(cd ~; pwd)"
         kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
-        if [[ "${kernel}" == "mingw*" ]]; then
-          export HOME=/c/msys64/home/runner
-          echo "new HOME is $HOME"
-        fi
-        echo "kernel=$kernel"
         case "${kernel}" in
           linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
           darwin*) brew install direnv ;;
