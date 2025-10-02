@@ -42,11 +42,18 @@ jobs:
       run:
         shell: bash --login {0}
     steps:
+    - name: Setup direnv
+      run: |
+        curl -sfL https://raw.githubusercontent.com/direnv/direnv/refs/tags/v2.37.1/install.sh | bash
+        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        touch .envrc
+        direnv allow .
     - name: CWD before checkout
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          mkdir -vp ${CWD}/out
          (cd ~; pwd)
+         find $CWD
          env >> ${CWD}/out/$(basename $0).env
     - name: Checkout repository
       uses: actions/checkout@v4
