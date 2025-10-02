@@ -57,7 +57,7 @@ jobs:
         case "${kernel}" in
           linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
           darwin*) brew install direnv ;;
-          mingw*|msys*) pacman -S direnv ;;
+          mingw*|msys*) pacman -S --noconfirm direnv ;;
           *)
             git clone https://github.com/direnv/direnv
             bash ./direnv/install.sh
