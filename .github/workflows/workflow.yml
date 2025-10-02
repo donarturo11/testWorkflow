@@ -45,6 +45,8 @@ jobs:
     - name: setup msys
       if: ${{ runner.os == 'Windows' }}
       run: |
+        export PATH="/c/msys64/usr/bin:$PATH"
+        pacman -Syu --noconfirm git
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
     - name: Setup direnv
       run: |
