@@ -46,7 +46,7 @@ jobs:
       run: |
         kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
         case ${kernel} in
-          mingw*) winget install --accept-package-agreements direnv ;;
+          mingw*) winget install --accept-source-agreements --accept-package-agreements direnv ;;
           linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
           darwin*) brew install direnv ;;
           *) curl -sfL https://direnv.net/install.sh | bash ;;
