@@ -46,6 +46,7 @@ jobs:
       run: |
         curl -sfL https://raw.githubusercontent.com/direnv/direnv/refs/tags/v2.37.1/install.sh | bash
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        . ~/.bashrc
         cd $RUNNER_WORKSPACE
         touch .envrc
         echo "export ROOT_WORKDIR='$(pwd)'" >> .envrc
