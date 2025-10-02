@@ -47,6 +47,7 @@ jobs:
         curl -sfL https://raw.githubusercontent.com/direnv/direnv/refs/tags/v2.37.1/install.sh | bash
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
         touch .envrc
+        echo "export ROOT_WORKDIR='$(pwd)'" >> .envrc
         direnv allow .
     - name: CWD before checkout
       run: |
