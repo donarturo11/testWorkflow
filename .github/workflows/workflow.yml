@@ -53,6 +53,7 @@ jobs:
         direnv allow .
     - name: CWD before checkout
       run: |
+         source ~/.bashrc
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          mkdir -vp ${CWD}/out
          (cd ~; pwd)
