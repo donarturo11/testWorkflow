@@ -41,20 +41,28 @@ jobs:
     defaults:
       run:
         shell: bash --login {0}
-    steps:
+    steps: 
+    - name: setup msys
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
     - name: Setup direnv
       run: |
+        echo "HOME: $(cd ~; pwd)"
         kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
+        if [[ ${kernel} == "mingw*" ]]; then
+          export HOME=/c/msys64/home/runner
+        fi
         case ${kernel} in
           linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
           darwin*) brew install direnv ;;
           *) curl -sfL https://direnv.net/install.sh | bash ;;
         esac
+        echo 'eval "$(direnv hook bash)"' >> $HOME/.bashrc
+ 
         
     - name: run setup settings
       run: |
-        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-        . ~/.bashrc
         cd $RUNNER_WORKSPACE
         touch .envrc
         echo "export ROOT_WORKDIR='$(pwd)'" >> .envrc
@@ -76,36 +84,6 @@ jobs:
          env >> ${CWD}/out/$(basename $0).env
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
          echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
-    - name: Setup MinGW
-      uses: msys2/setup-msys2@v2
-      if: ${{ matrix.name == 'windows-mingw' }}
-      with:
-        update: true
-        cache: true
-        msystem: ucrt64
-        pacboy: toolchain cmake
-    - name: setup vcpkg
-      if: ${{ matrix.name == 'windows-msvc' }}
-      run: |  
-        CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        env >> ${CWD}/out/$(basename $0).env
-        #CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        #cd $CWD
-        #VCPKG_ROOT=$CWD/vcpkg
-        #[ ! -e $VCPKG_ROOT ] && mkdir -p $VCPKG_ROOT
-        #curl -qL https://github.com/microsoft/vcpkg/archive/refs/tags/2025.07.25.tar.gz -o vcpkg.tar.gz &> /dev/null
-        #tar -xzf vcpkg.tar.gz --strip-components=1 -C $VCPKG_ROOT
-        #echo VCPKG_ROOT=${VCPKG_ROOT} >> $GITHUB_ENV
-        #echo VCPKG_MAX_CONCURRENCY=20 >> $GITHUB_ENV
-        #bash $VCPKG_ROOT/bootstrap-vcpkg.sh
-        #URL_ROOT=https://freeshell.de/arturwro/pub/vcpkg/ci-github-actions
-        #REPO_FORMAT="{triplet}/{name}_{version}_{triplet}.zip#{sha}"
-        #echo VCPKG_BINARY_SOURCES="clear;http,$URL_ROOT/$REPO_FORMAT,read" >> $GITHUB_ENV
-    - name: setup msvc
-      if: ${{ matrix.name == 'windows-msvc' }}
-      uses: egor-tensin/vs-shell@v2
-      with:
-        arch: x64
     - name: install-dependencies
       run: echo "PWD=$(pwd)"
     - name: setup control artifacts
