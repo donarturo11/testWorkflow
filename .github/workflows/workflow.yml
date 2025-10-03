@@ -73,6 +73,7 @@ jobs:
         direnv allow .
     - name: run setup settings
       run: |
+        echo "HOME: $(cd ~; pwd)"
         source ~/.bashrc
         echo "FOO=$FOO"
         echo "BAR=$BAR" 
