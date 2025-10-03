@@ -60,6 +60,7 @@ jobs:
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        echo 'source ~/.bashrc' >> ~/.bash_profile
         source ~/.bashrc
         cd $CWD
         touch .envrc
