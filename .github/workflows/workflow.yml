@@ -70,6 +70,7 @@ jobs:
         direnv allow $CWD
         direnv reload $CWD
         cd $CWD
+        direnv export gha >> $GITHUB_ENV
     - name: run setup settings
       run: |
         echo "HOME: $(cd ~; pwd)"
