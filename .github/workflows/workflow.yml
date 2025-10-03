@@ -74,9 +74,11 @@ jobs:
         echo 'export ROOT_WORKDIR=$(cd $(dirname ${BASH_SOURCE[0]});pwd)' >> .envrc
         echo 'echo "Found \$BASH_SOURCE"' >> .envrc
         direnv allow .
+        direnv reload
     - name: Test
       run: |
         cd $GITHUB_WORKSPACE
+        direnv reload
         direnv status
     - name: CWD before checkout
       run: |
