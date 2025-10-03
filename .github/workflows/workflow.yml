@@ -64,12 +64,15 @@ jobs:
         cd $CWD
         touch .envrc
         echo 'echo "Welcome to direnv"' >> .envrc
+        echo 'export FOO=foo' >> .envrc
+        echo "BAR='bar'" >> /.env
         direnv allow .
-        #direnv export gha >> $GITHUB_ENV
+        direnv export gha >> $GITHUB_ENV
         cat $GITHUB_ENV
     - name: run setup settings
       run: |
-        echo ""
+        echo "FOO=$FOO"
+        echo "BAR=$BAR" 
     - name: Test
       run: |
         echo ""
