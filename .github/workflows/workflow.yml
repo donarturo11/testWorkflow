@@ -29,8 +29,10 @@ jobs:
         include:
           - name: "windows-msvc"
             os: "windows-latest"
+            shell: 'C:\msys64\usr\bin\bash.exe -leo pipefail {0}'
           - name: "windows-mingw"
             os: "windows-latest"
+            shell: 'C:\msys64\usr\bin\bash.exe -leo pipefail {0}'
           - name: "linux"
             os: "ubuntu-latest"
           - name: "macos-arm64"
