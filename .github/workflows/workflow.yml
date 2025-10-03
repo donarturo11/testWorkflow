@@ -55,44 +55,45 @@ jobs:
         # bash -lc 'pacman -S --noconfirm git'
         # echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo ""
-    - name: Setup direnv
-      env:
-        DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
-      run: |
-        echo "HOME: $(cd ~; pwd)"
-        CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        if [[ $RUNNER_OS == 'Windows' ]]; then
-          env CWD=$CWD /c/msys64/usr/bin/bash -lc 'echo "_HOME=$HOME" >> $(cd $RUNNER_WORKSPACE; pwd)/.env'
-          set -a; source $CWD/.env; set +a
-        else
-          _HOME=$HOME
-        fi
-        echo 'echo "Welcome to GithubAction environment"' >> $_HOME/.bashrc
-        curl https://direnv.net/install.sh | bash
-        echo 'eval "$(direnv hook bash)"' >> $_HOME/.bashrc
-        touch $CWD/.envrc
-        # env CWD=$CWD bash -lc 'direnv allow $CWD'
-        # echo "DIRENV_DIR=$DIRENV_DIR"
-        echo 'echo "Welcome to direnv"' >> $CWD/.envrc
-        echo 'export FOO=foo' >> $CWD/.envrc
-        echo "BAR='bar'" >> $CWD/.env
-        direnv allow $CWD
-        # direnv reload $CWD
-        cd $CWD
-        direnv export gha >> $GITHUB_ENV
+    - uses: HatsuneMiku3939/direnv-action@v1
+#    - name: Setup direnv
+#      env:
+#        DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
+#      run: |
+#        echo "HOME: $(cd ~; pwd)"
+#        CWD=$(cd $RUNNER_WORKSPACE; pwd)
+#        if [[ $RUNNER_OS == 'Windows' ]]; then
+#        env CWD=$CWD /c/msys64/usr/bin/bash -lc 'echo "_HOME=$HOME" >> /.env'
+#          set -a; source $CWD/.env; set +a
+#        else
+#          _HOME=$HOME
+#        fi
+#        echo 'echo "Welcome to GithubAction environment"' >> $_HOME/.bashrc
+#        curl https://direnv.net/install.sh | bash
+#        echo 'eval "$(direnv hook bash)"' >> $_HOME/.bashrc
+#        touch $CWD/.envrc
+#        # env CWD=$CWD bash -lc 'direnv allow $CWD'
+#        # echo "DIRENV_DIR=$DIRENV_DIR"
+#        echo 'echo "Welcome to direnv"' >> $CWD/.envrc
+#        echo 'export FOO=foo' >> $CWD/.envrc
+#        echo "BAR='bar'" >> $CWD/.env
+#        direnv allow $CWD
+#        # direnv reload $CWD
+#        cd $CWD
+#        direnv export gha >> $GITHUB_ENV
     - name: run setup settings
       run: |
-        echo "HOME: $(cd ~; pwd)"
-        direnv reload
-        direnv status
-        #[[ ! -z DIRENV_FILE && -f $DIRENV_FILE ]] && source $DIRENV_FILE
-        echo "FOO=$FOO"
-        echo "BAR=$BAR"
-        echo "==="
-        cd $RUNNER_WORKSPACE
-        [[ ! -e out ]] && mkdir out
-        env > out/test-direnv.env
-        #bash -lc 'echo; env | grep "^DIRNAME"'
+        # echo "HOME: $(cd ~; pwd)"
+        # direnv reload
+        # direnv status
+        # [[ ! -z DIRENV_FILE && -f $DIRENV_FILE ]] && source $DIRENV_FILE
+        # echo "FOO=$FOO"
+        # echo "BAR=$BAR"
+        # echo "==="
+        # cd $RUNNER_WORKSPACE
+        # [[ ! -e out ]] && mkdir out
+        # env > out/test-direnv.env
+        # bash -lc 'echo; env | grep "^DIRNAME"'
         echo "==="
     - name: Test
       run: |
