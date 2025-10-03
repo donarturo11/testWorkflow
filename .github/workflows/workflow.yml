@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: ${{ matrix.runs-on == startsWith( matrix.runs-on, 'windows') && msys2bash || 'bash -le {0}' }}
+        shell: ${{ matrix.runs-on == startsWith( matrix.runs-on, 'windows') && 'msys2bash {0}' || 'bash -le {0}' }}
     steps: 
     - name: setup msys
       if: ${{ runner.os == 'Windows' }}
