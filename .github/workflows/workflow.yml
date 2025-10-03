@@ -56,9 +56,9 @@ jobs:
         # echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo ""
     - run: touch .envrc; touch .env
-    - uses: HatsuneMiku3939/direnv-action@v1
+    - uses: andreygubarev/setup-direnv@v1 
       with:
-        direnvVersion: 2.37.1
+        version: 2.37.1
 #    - name: Setup direnv
 #      env:
 #        DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
