@@ -76,11 +76,11 @@ jobs:
         direnv allow .
         direnv export gha > "$GITHUB_ENV"
         direnv reload
+        cat "$GITHUB_ENV"
     - name: Test
       run: |
         cd $GITHUB_WORKSPACE
-        direnv reload
-        direnv status
+        echo ""
     - name: CWD before checkout
       run: |
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
