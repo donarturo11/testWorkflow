@@ -42,6 +42,8 @@ jobs:
       run:
         shell: 'bash -e {0}'
     steps: 
+    - name: Checkout repository
+      uses: actions/checkout@v4
     - name: setup msys
       if: ${{ runner.os == 'Windows' }}
       run: |
@@ -69,8 +71,6 @@ jobs:
         
     - name: run setup settings
       run: |
-        cd $RUNNER_WORKSPACE
-        touch .envrc
         echo "export ROOT_WORKDIR='$(pwd)'" >> .envrc
         direnv allow .
     - name: Test
@@ -85,8 +85,6 @@ jobs:
         find $CWD
         env >> ${CWD}/out/$(basename $0).env
         cd $GITHUB_WORKSPACE
-    - name: Checkout repository
-      uses: actions/checkout@v4
     - name: Setup common environment
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
