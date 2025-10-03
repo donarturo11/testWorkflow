@@ -89,10 +89,10 @@ jobs:
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
         export ARTIFACTS_DIR=$CWD/out
         [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
-        #echo "::notice::Save to $ARTIFACTS_DIR"
-        #echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
-        #echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
-        #echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
+        echo "::notice::Save to $ARTIFACTS_DIR"
+        echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
+        echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
+        echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
         env | sort >> $ARTIFACTS_DIR/environment
         echo "ARTIFACTS_DIR=$ARTIFACTS_DIR" >> $CWD/project.env
         cat $CWD/project.env >> $GITHUB_ENV
