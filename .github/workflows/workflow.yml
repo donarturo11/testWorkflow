@@ -63,8 +63,9 @@ jobs:
             bash ./direnv/install.sh
             ;;
         esac
+        echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-        cat ~/.bashrc 
+        cat ~/.bashrc
         
     - name: run setup settings
       run: |
@@ -76,7 +77,7 @@ jobs:
       run: |
         echo "outside"
         env | grep '^ROOT'
-        bash -lc "echo 'inside'; env | grep '^ROOT'"
+        bash -lc "echo 'inside'; env | grep '^ROOT'" || echo '!'
     - name: CWD before checkout
       run: |
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
