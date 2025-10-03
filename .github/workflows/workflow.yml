@@ -61,22 +61,29 @@ jobs:
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
         eval "$(direnv hook bash)"
-        cd $CWD
-        touch .envrc
-        direnv allow .
+        
+        touch $CWD/.envrc
+        direnv allow $CWD
         echo "DIRENV_DIR=$DIRENV_DIR"
-        echo 'echo "Welcome to direnv"' >> .envrc
-        echo 'export FOO=foo' >> .envrc
-        echo "BAR='bar'" >> .env
-        direnv allow .
-        direnv reload .
+        echo 'echo "Welcome to direnv"' >> $CWD/.envrc
+        echo 'export FOO=foo' >> $CWD/.envrc
+        echo "BAR='bar'" >> $CWD/.env
+        direnv allow $CWD
+        direnv reload $CWD
+        cd $CWD
+        echo '==='
+        env | grep '^DIRENV'
+        echo '==='
     - name: run setup settings
       run: |
         echo "HOME: $(cd ~; pwd)"
         direnv status
         [[ ! -z DIRENV_FILE && -f $DIRENV_FILE ]] && source $DIRENV_FILE
         echo "FOO=$FOO"
-        echo "BAR=$BAR" 
+        echo "BAR=$BAR"
+        echo "==="
+        env | grep '^DIRENV'
+        echo "==="
     - name: Test
       run: |
         echo ""
