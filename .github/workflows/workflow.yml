@@ -58,11 +58,11 @@ jobs:
       run: |
         echo "HOME: $(cd ~; pwd)"
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        echo 'echo "Welcome to GithubAction environment"' >> ~/.profile
+        echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
-        echo 'eval "$(direnv hook bash)"' ~/.profile
+        echo 'eval "$(direnv hook bash)"' ~/.bashrc
         touch $CWD/.envrc
-        source ~/.profile
+        source ~/.bashrc
         direnv allow $CWD
         echo "DIRENV_DIR=$DIRENV_DIR"
         echo 'echo "Welcome to direnv"' >> $CWD/.envrc
