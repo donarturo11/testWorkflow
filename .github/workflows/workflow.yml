@@ -41,6 +41,7 @@ jobs:
       run:
         shell: bash -leo pipefail {0}
     steps: 
+    - uses: release-engineers/action-setup-bash@v1    
     - name: Checkout repository
       uses: actions/checkout@v4
 #    - name: setup msys
