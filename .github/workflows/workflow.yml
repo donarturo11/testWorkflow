@@ -53,16 +53,23 @@ jobs:
         # bash -lc 'curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /etc/pacman.conf'
         # bash -lc 'pacman -Syu --noconfirm'
         # bash -lc 'pacman -S --noconfirm git'
-        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        # echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        echo ""
     - name: Setup direnv
       env:
         DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
       run: |
         echo "HOME: $(cd ~; pwd)"
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
+        if [[ $RUNNER_OS == 'Windows' ]]; then
+          env CWD=$CWD /c/msys64/usr/bin/bash -lc 'echo _HOME=$HOME >> $CWD/.env'
+          set -a; source .env; set +a
+        else
+          _HOME=$HOME
+        fi
+        echo 'echo "Welcome to GithubAction environment"' >> $_HOME/.bashrc
         curl https://direnv.net/install.sh | bash
-        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        echo 'eval "$(direnv hook bash)"' >> $_HOME/.bashrc
         touch $CWD/.envrc
         # env CWD=$CWD bash -lc 'direnv allow $CWD'
         # echo "DIRENV_DIR=$DIRENV_DIR"
