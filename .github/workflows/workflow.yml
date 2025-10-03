@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: 'bash -le {0}'
+        shell: 'bash -l {0}'
     steps: 
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -57,6 +57,7 @@ jobs:
         DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
       run: |
         echo "HOME: $(cd ~; pwd)"
+        CWD=$(cd $RUNNER_WORKSPACE; pwd)
         #kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
         #case "${kernel}" in
         #  linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
@@ -70,6 +71,10 @@ jobs:
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        source ~/.bashrc
+        cd $CWD
+        touch .envrc
+        direnv export gha >> $GITHUB_ENV
         cat ~/.bashrc
         
     - name: run setup settings
