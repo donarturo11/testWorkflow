@@ -73,7 +73,7 @@ jobs:
         direnv allow .
     - name: run setup settings
       run: |
-        #!/usr/bin/env bash --rcfile ~/.bashrc
+        source ~/.bashrc
         echo "FOO=$FOO"
         echo "BAR=$BAR" 
     - name: Test
