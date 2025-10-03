@@ -72,14 +72,19 @@ jobs:
         touch .envrc
         echo "export ROOT_WORKDIR='$(pwd)'" >> .envrc
         direnv allow .
+    - name: Test
+      run: |
+        echo "outside"
+        env | grep '^ROOT'
+        bash -lc "echo 'inside'; env | grep '^ROOT'"
     - name: CWD before checkout
       run: |
-         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-         mkdir -vp ${CWD}/out
-         (cd ~; pwd)
-         find $CWD
-         env >> ${CWD}/out/$(basename $0).env
-         cd $GITHUB_WORKSPACE
+        CWD=$(cd $RUNNER_WORKSPACE; pwd)
+        mkdir -vp ${CWD}/out
+        (cd ~; pwd)
+        find $CWD
+        env >> ${CWD}/out/$(basename $0).env
+        cd $GITHUB_WORKSPACE
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Setup common environment
