@@ -51,6 +51,12 @@ jobs:
       run: |
         curl https://direnv.net/install.sh | bash
         touch .envrc
+        cat <<'EOF' >> .envrc
+        CWD=(cd $(dirname ${BASH_SOURCE[0]}); pwd)
+        if [[ -e $CWD/.env ]]; then
+          set -a; source $CWD/.env; set +a
+        fi
+        EOF
         echo 'export FOO=foo' > .envrc
         direnv allow .
         direnv export gha >> $GITHUB_ENV
@@ -67,6 +73,7 @@ jobs:
         # [[ ! -e out ]] && mkdir out
         # env > out/test-direnv.env
         # bash -lc 'echo; env | grep "^DIRNAME"'
+        echo "BAR=bar" >> .env
         echo "==="
     - name: Test
       run: |
