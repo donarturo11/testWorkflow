@@ -1,6 +1,8 @@
 name: Build common deps
 
 on:
+  push:
+    branches: []
   workflow_dispatch:
     inputs:
       publish-www:
@@ -44,14 +46,14 @@ jobs:
     - uses: release-engineers/action-setup-bash@v1    
     - name: Checkout repository
       uses: actions/checkout@v4
-#    - name: setup msys
-#      if: ${{ runner.os == 'Windows' }}
-#      run: |
-#        export PATH="/c/msys64/usr/bin:$PATH"
-#        bash -lc 'curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /etc/pacman.conf'
-#        bash -lc 'pacman -Syu --noconfirm'
-#        bash -lc 'pacman -S --noconfirm git'
-#        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+    - name: setup msys
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        # export PATH="/c/msys64/usr/bin:$PATH"
+        # bash -lc 'curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /etc/pacman.conf'
+        # bash -lc 'pacman -Syu --noconfirm'
+        # bash -lc 'pacman -S --noconfirm git'
+        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
     - name: Setup direnv
       env:
         DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
@@ -62,13 +64,13 @@ jobs:
         curl https://direnv.net/install.sh | bash
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
         touch $CWD/.envrc
-        env CWD=$CWD bash ~/.bashrc -c 'direnv allow $CWD'
-        echo "DIRENV_DIR=$DIRENV_DIR"
+        # env CWD=$CWD bash -lc 'direnv allow $CWD'
+        # echo "DIRENV_DIR=$DIRENV_DIR"
         echo 'echo "Welcome to direnv"' >> $CWD/.envrc
         echo 'export FOO=foo' >> $CWD/.envrc
         echo "BAR='bar'" >> $CWD/.env
         direnv allow $CWD
-        direnv reload $CWD
+        # direnv reload $CWD
         cd $CWD
         direnv export gha >> $GITHUB_ENV
     - name: run setup settings
