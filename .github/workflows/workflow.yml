@@ -55,6 +55,7 @@ jobs:
         # bash -lc 'pacman -S --noconfirm git'
         # echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo ""
+    - run: touch .envrc; touch .env
     - uses: HatsuneMiku3939/direnv-action@v1
 #    - name: Setup direnv
 #      env:
