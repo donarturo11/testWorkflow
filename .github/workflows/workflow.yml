@@ -74,6 +74,7 @@ jobs:
         source ~/.bashrc
         cd $CWD
         touch .envrc
+        direnv allow .
         direnv export gha >> $GITHUB_ENV
         cat ~/.bashrc
         
