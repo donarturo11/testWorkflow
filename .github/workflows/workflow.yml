@@ -60,21 +60,20 @@ jobs:
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
-        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-        echo 'source ~/.bashrc' >> ~/.bash_profile
-        source ~/.bashrc
+        eval "$(direnv hook bash)"
         cd $CWD
         touch .envrc
         direnv allow .
-        direnv export gha >> $GITHUB_ENV
+        echo "DIRENV_DIR=$DIRENV_DIR"
         echo 'echo "Welcome to direnv"' >> .envrc
         echo 'export FOO=foo' >> .envrc
         echo "BAR='bar'" >> .env
         direnv allow .
+        direnv reload
     - name: run setup settings
       run: |
         echo "HOME: $(cd ~; pwd)"
-        source ~/.bashrc
+        [[ ! -z DIRENV_FILE && -f $DIRENV_FILE ]] && source $DIRENV_FILE
         echo "FOO=$FOO"
         echo "BAR=$BAR" 
     - name: Test
