@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: 'bash -e {0}'
+        shell: 'bash -le {0}'
     steps: 
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -69,8 +69,8 @@ jobs:
         #esac
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
-        #echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-        #cat ~/.bashrc
+        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        cat ~/.bashrc
         
     - name: run setup settings
       run: |
