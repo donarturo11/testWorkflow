@@ -71,7 +71,8 @@ jobs:
         
     - name: run setup settings
       run: |
-        echo "export ROOT_WORKDIR='$(pwd)'" >> .envrc
+        echo 'export ROOT_WORKDIR=$(cd $(dirname ${BASH_SOURCE[0]});pwd)' >> .envrc
+        echo 'echo "Found \$BASH_SOURCE"' >> .envrc
         direnv allow .
     - name: Test
       run: |
