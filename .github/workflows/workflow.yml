@@ -62,8 +62,8 @@ jobs:
         echo "HOME: $(cd ~; pwd)"
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
         if [[ $RUNNER_OS == 'Windows' ]]; then
-          env CWD=$CWD /c/msys64/usr/bin/bash -lc 'echo _HOME=$HOME >> $CWD/.env'
-          set -a; source .env; set +a
+          env CWD=$CWD /c/msys64/usr/bin/bash -lc 'echo "_HOME=$HOME" >> $(cd $RUNNER_WORKSPACE; pwd)/.env'
+          set -a; source $CWD/.env; set +a
         else
           _HOME=$HOME
         fi
