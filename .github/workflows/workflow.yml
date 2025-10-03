@@ -60,10 +60,11 @@ jobs:
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-        direnv export gha >> $GITHUB_ENV
         source ~/.bashrc
         cd $CWD
         touch .envrc
+        direnv allow .
+        direnv export gha >> $GITHUB_ENV
         echo 'echo "Welcome to direnv"' >> .envrc
         echo 'export FOO=foo' >> .envrc
         echo "BAR='bar'" >> .env
