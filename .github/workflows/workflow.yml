@@ -69,10 +69,11 @@ jobs:
         echo 'export FOO=foo' >> .envrc
         echo "BAR='bar'" >> .env
         direnv allow .
-        direnv reload
+        direnv reload .
     - name: run setup settings
       run: |
         echo "HOME: $(cd ~; pwd)"
+        direnv status
         [[ ! -z DIRENV_FILE && -f $DIRENV_FILE ]] && source $DIRENV_FILE
         echo "FOO=$FOO"
         echo "BAR=$BAR" 
