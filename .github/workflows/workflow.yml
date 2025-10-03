@@ -75,9 +75,8 @@ jobs:
         direnv allow .
     - name: Test
       run: |
-        echo "outside"
-        env | grep '^ROOT'
-        bash -lc "echo 'inside'; env | grep '^ROOT'" || echo '!'
+        cd $GITHUB_WORKSPACE
+        direnv status
     - name: CWD before checkout
       run: |
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
