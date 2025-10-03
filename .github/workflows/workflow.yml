@@ -44,52 +44,40 @@ jobs:
     steps: 
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: setup msys
-      if: ${{ runner.os == 'Windows' }}
-      run: |
-        export PATH="/c/msys64/usr/bin:$PATH"
-        bash -lc 'curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /etc/pacman.conf'
-        bash -lc 'pacman -Syu --noconfirm'
-        bash -lc 'pacman -S --noconfirm git'
-        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+#    - name: setup msys
+#      if: ${{ runner.os == 'Windows' }}
+#      run: |
+#        export PATH="/c/msys64/usr/bin:$PATH"
+#        bash -lc 'curl -L https://freeshell.de/arturwro/pub/MINGW/donarturo11.repo >> /etc/pacman.conf'
+#        bash -lc 'pacman -Syu --noconfirm'
+#        bash -lc 'pacman -S --noconfirm git'
+#        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
     - name: Setup direnv
+      env:
+        DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
       run: |
         echo "HOME: $(cd ~; pwd)"
-        kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
-        case "${kernel}" in
-          linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
-          darwin*) brew install direnv ;;
-          mingw*|msys*) pacman -S --noconfirm direnv ;;
-          *)
-            git clone https://github.com/direnv/direnv
-            bash ./direnv/install.sh
-            ;;
-        esac
+        #kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
+        #case "${kernel}" in
+        #  linux*) sudo apt-get update -y; sudo apt-get -y install direnv ;;
+        #  darwin*) brew install direnv ;;
+        #  mingw*|msys*) pacman -S --noconfirm direnv ;;
+        #  *)
+        #    git clone https://github.com/direnv/direnv
+        #    bash ./direnv/install.sh
+        #    ;;
+        #esac
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
-        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-        cat ~/.bashrc
+        curl https://direnv.net/install.sh | bash
+        #echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+        #cat ~/.bashrc
         
     - name: run setup settings
       run: |
-        echo 'export ROOT_WORKDIR=$(cd $(dirname ${BASH_SOURCE[0]});pwd)' >> .envrc
-        echo 'echo "Found \$BASH_SOURCE"' >> .envrc
-        direnv allow .
-        direnv export gha > "$GITHUB_ENV"
-        direnv reload
-        cat "$GITHUB_ENV"
+        echo ""
     - name: Test
       run: |
-        cd $GITHUB_WORKSPACE
-        direnv status
         echo ""
-    - name: CWD before checkout
-      run: |
-        CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        mkdir -vp ${CWD}/out
-        (cd ~; pwd)
-        find $CWD
-        env >> ${CWD}/out/$(basename $0).env
-        cd $GITHUB_WORKSPACE
     - name: Setup common environment
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
