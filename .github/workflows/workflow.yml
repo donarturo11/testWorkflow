@@ -67,7 +67,7 @@ jobs:
         echo 'export FOO=foo' >> .envrc
         echo "BAR='bar'" >> /.env
         direnv allow .
-        direnv export gha >> $GITHUB_ENV
+        # direnv export gha >> $GITHUB_ENV
         cat $GITHUB_ENV
     - name: run setup settings
       run: |
