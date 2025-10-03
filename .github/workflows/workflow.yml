@@ -65,7 +65,7 @@ jobs:
         touch .envrc
         echo 'echo "Welcome to direnv"' >> .envrc
         echo 'export FOO=foo' >> .envrc
-        echo "BAR='bar'" >> /.env
+        echo "BAR='bar'" >> ~/.env
         direnv allow .
         # direnv export gha >> $GITHUB_ENV
         cat $GITHUB_ENV
