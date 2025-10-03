@@ -3,8 +3,6 @@ name: Test event
 on:
   pull_request:
     branches: [ ]
-  push:
-    branches: [ ]
   create:
       tags: ['v*']
   workflow_dispatch:
