@@ -60,10 +60,9 @@ jobs:
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
         echo 'echo "Welcome to GithubAction environment"' >> ~/.bashrc
         curl https://direnv.net/install.sh | bash
-        echo 'eval "$(direnv hook bash)"' ~/.bashrc
+        echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
         touch $CWD/.envrc
-        source ~/.bashrc
-        direnv allow $CWD
+        env CWD=$CWD bash ~/.bashrc -c 'direnv allow $CWD'
         echo "DIRENV_DIR=$DIRENV_DIR"
         echo 'echo "Welcome to direnv"' >> $CWD/.envrc
         echo 'export FOO=foo' >> $CWD/.envrc
