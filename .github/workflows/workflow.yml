@@ -51,7 +51,7 @@ jobs:
       env:
         DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
       run: |
-        curl https://direnv.net/install.sh | bash
+        curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
         touch .envrc
         cat <<'EOF' >> .envrc
         CWD=(cd $(dirname ${BASH_SOURCE[0]}); pwd)
