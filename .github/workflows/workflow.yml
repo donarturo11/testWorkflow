@@ -54,8 +54,8 @@ jobs:
         curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
         CWD=$(pwd)
         cd $CWD
-        touch $CWD/.envrc
-        cat <<'EOF' >> $CWD/.envrc
+        touch .envrc
+        cat <<'EOF' >> .envrc
         CWD=(cd $(dirname ${BASH_SOURCE[0]}); pwd)
         if [[ -e $CWD/.env ]]; then
           set -a
@@ -64,7 +64,7 @@ jobs:
           set +a
         fi
         EOF
-        echo 'export FOO=foo' > .envrc
+        echo 'export FOO=foo' >> .envrc
         direnv allow .
         direnv export gha >> $GITHUB_ENV
     - name: run setup settings
