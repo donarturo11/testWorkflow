@@ -52,8 +52,10 @@ jobs:
         DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
       run: |
         curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
-        touch .envrc
-        cat <<'EOF' >> .envrc
+        CWD=$(pwd)
+        cd $CWD
+        touch $CWD/.envrc
+        cat <<'EOF' >> $CWD/.envrc
         CWD=(cd $(dirname ${BASH_SOURCE[0]}); pwd)
         if [[ -e $CWD/.env ]]; then
           set -a
@@ -67,17 +69,6 @@ jobs:
         direnv export gha >> $GITHUB_ENV
     - name: run setup settings
       run: |
-        # echo "HOME: $(cd ~; pwd)"
-        # direnv reload
-        # direnv status
-        # [[ ! -z DIRENV_FILE && -f $DIRENV_FILE ]] && source $DIRENV_FILE
-        # echo "FOO=$FOO"
-        # echo "BAR=$BAR"
-        # echo "==="
-        # cd $RUNNER_WORKSPACE
-        # [[ ! -e out ]] && mkdir out
-        # env > out/test-direnv.env
-        # bash -lc 'echo; env | grep "^DIRNAME"'
         echo "==="
         cat $DIRENV_FILE
         echo "==="
