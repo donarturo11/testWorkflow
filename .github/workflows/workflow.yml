@@ -79,6 +79,8 @@ jobs:
         # env > out/test-direnv.env
         # bash -lc 'echo; env | grep "^DIRNAME"'
         echo "BAR=bar" >> .env
+        direnv allow .
+        direnv export gha
         echo "==="
     - name: Test
       run: |
