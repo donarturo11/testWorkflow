@@ -78,6 +78,9 @@ jobs:
         # [[ ! -e out ]] && mkdir out
         # env > out/test-direnv.env
         # bash -lc 'echo; env | grep "^DIRNAME"'
+        echo "==="
+        cat $DIRENV_FILE
+        echo "==="
         echo "BAR=bar" >> .env
         direnv allow .
         direnv export gha
