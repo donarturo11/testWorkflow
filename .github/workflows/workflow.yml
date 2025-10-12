@@ -56,7 +56,10 @@ jobs:
         cat <<'EOF' >> .envrc
         CWD=(cd $(dirname ${BASH_SOURCE[0]}); pwd)
         if [[ -e $CWD/.env ]]; then
-          set -a; source $CWD/.env; set +a
+          set -a
+          echo "Loading .env"
+          source $CWD/.env
+          set +a
         fi
         EOF
         echo 'export FOO=foo' > .envrc
@@ -79,7 +82,8 @@ jobs:
         echo "==="
     - name: Test
       run: |
-        echo ""
+        echo "FOO='$FOO'"
+        echo "BAR='$BAR'"
     - name: Setup common environment
       run: |
          CWD=$(cd $RUNNER_WORKSPACE; pwd)
