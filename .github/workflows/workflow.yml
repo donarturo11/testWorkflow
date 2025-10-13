@@ -54,6 +54,7 @@ jobs:
         curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
         echo 'echo "Github Action Workflow bashrc"' >> ./.bashrc
         echo 'eval "$(direnv hook bash)"' >> ./.bashrc
+        echo BASH_ENV=$(pwd)/.bashrc >> $GITHUB_ENV
         echo "source $(pwd)/.bashrc" >> ~/.profile
         echo 'echo "Local profile"' >> ./.profile
         CWD=$(pwd)
@@ -84,12 +85,6 @@ jobs:
         echo "==="
     - name: Test
       run: |
-        echo "BASH_ENV=$BASH_ENV"
-        echo "FOO='$FOO'"
-        echo "BAR='$BAR'"
-    - name: Test 2
-      run: |
-        source ~/.profile
         echo "BASH_ENV=$BASH_ENV"
         echo "FOO='$FOO'"
         echo "BAR='$BAR'"
