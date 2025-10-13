@@ -74,6 +74,7 @@ jobs:
     - name: run setup settings
       run: |
         echo "BASH_ENV=$BASH_ENV"
+        echo "ENV=$ENV"
         echo "==="
         cat $DIRENV_FILE
         echo "==="
