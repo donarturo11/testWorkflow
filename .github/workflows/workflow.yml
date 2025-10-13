@@ -73,6 +73,7 @@ jobs:
         direnv export gha >> $GITHUB_ENV
     - name: run setup settings
       run: |
+        echo "BASH_ENV=$BASH_ENV"
         echo "==="
         cat $DIRENV_FILE
         echo "==="
@@ -82,11 +83,13 @@ jobs:
         echo "==="
     - name: Test
       run: |
+        echo "BASH_ENV=$BASH_ENV"
         echo "FOO='$FOO'"
         echo "BAR='$BAR'"
     - name: Test 2
       run: |
         source ~/.profile
+        echo "BASH_ENV=$BASH_ENV"
         echo "FOO='$FOO'"
         echo "BAR='$BAR'"
     - name: Setup common environment
