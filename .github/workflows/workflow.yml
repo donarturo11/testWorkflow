@@ -43,7 +43,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: ${{ matrix.shell && matrix.shell || 'bash -leo pipefail {0}' }}
+        shell: bash
     steps: 
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -55,8 +55,6 @@ jobs:
         echo 'echo "Github Action Workflow bashrc"' >> ./.bashrc
         echo 'eval "$(direnv hook bash)"' >> ./.bashrc
         echo BASH_ENV=$(pwd)/.bashrc >> $GITHUB_ENV
-        echo "source $(pwd)/.bashrc" >> ~/.profile
-        echo 'echo "Local profile"' >> ./.profile
         CWD=$(pwd)
         cd $CWD
         touch .envrc
