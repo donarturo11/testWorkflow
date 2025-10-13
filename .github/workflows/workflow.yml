@@ -59,7 +59,7 @@ jobs:
         cd $CWD
         touch .envrc
         cat <<'EOF' >> .envrc
-        CWD=$(cd $(dirname ${BASH_SOURCE[0]}); pwd)
+        CWD=$(pwd)
         if [[ -e $CWD/.env ]]; then
           set -a
           echo "Loading .env"
