@@ -67,6 +67,7 @@ jobs:
           set +a
         fi
         EOF
+        direnv allow .
         direnv export gha >> $GITHUB_ENV
     - run: |
         echo 'export FOO=foo' >> .envrc
