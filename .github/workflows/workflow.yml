@@ -55,10 +55,11 @@ jobs:
         curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
         echo 'echo "Github Action Workflow bashrc"' >> ./.bashrc
         echo 'eval "$(direnv hook bash)"' >> ./.bashrc
-        echo BASH_ENV=$(pwd)/.bashrc >> $GITHUB_ENV
+        echo BASH_ENV=$(pwd)/.bashrc >> "$GITHUB_ENV"
     - run: |
         echo 'export FOO=foo' >> .envrc
         direnv allow .
+        direnv export gha >> "$GITHUB_ENV"
     - name: run setup settings
       run: |
         echo "BASH_ENV=$BASH_ENV"
