@@ -52,6 +52,7 @@ jobs:
         DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
       run: |
         curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
+        echo 'echo "Github Action Workflow"' >> ~/.bashrc
         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
         echo 'source ~/.bashrc' >> ~/.profile
         CWD=$(pwd)
