@@ -56,18 +56,6 @@ jobs:
         echo 'echo "Github Action Workflow bashrc"' >> ./.bashrc
         echo 'eval "$(direnv hook bash)"' >> ./.bashrc
         echo BASH_ENV=$(pwd)/.bashrc >> $GITHUB_ENV
-        set -a; source $GITHUB_ENV; set +a
-        cd $CWD
-        cat <<'EOF' >> .envrc
-        CWD=$(pwd)
-        if [[ -e $CWD/.env ]]; then
-          set -a
-          echo "Loading .env"
-          source $CWD/.env
-          set +a
-        fi
-        EOF
-        direnv allow .
     - run: |
         echo 'export FOO=foo' >> .envrc
         direnv allow .
