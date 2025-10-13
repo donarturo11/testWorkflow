@@ -67,9 +67,10 @@ jobs:
           set +a
         fi
         EOF
+        direnv export gha >> $GITHUB_ENV
+    - run: |
         echo 'export FOO=foo' >> .envrc
         direnv allow .
-        #direnv export gha >> $BASH_ENV
     - name: run setup settings
       run: |
         echo "BASH_ENV=$BASH_ENV"
