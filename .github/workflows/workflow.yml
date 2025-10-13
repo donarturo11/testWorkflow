@@ -57,6 +57,7 @@ jobs:
         echo 'eval "$(direnv hook bash)"' >> ./.bashrc
         echo BASH_ENV=$(pwd)/.bashrc >> "$GITHUB_ENV"
     - run: |
+        touch .envrc
         direnv allow .
         direnv export gha > "$GITHUB_ENV"
     - name: run setup settings
