@@ -53,8 +53,8 @@ jobs:
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
     - if: ${{ runner.os == 'Windows' }}
       env:
-      run: |
         MSYSTEM: ${{ matrix.msystem }}
+      run: |
         echo "export MSYSTEM=$MSYSTEM" >> $BASH_ENV
         echo "source /c/msys64/etc/msystem" > $BASH_ENV
     - run: |
