@@ -56,6 +56,11 @@ jobs:
         echo "export MSYSTEM=${{ matrix.msystem }}" >> $BASH_ENV
         echo "source /etc/msystem" >> $BASH_ENV
         which vswhere || echo "vswhere not found"
+    - name: uname
+      run: |
+        echo UNAME_S=$(uname -s)
+        echo UNAME_M=$(uname -m)
+        echo UNAME_O=$(uname -o)
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
