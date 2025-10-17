@@ -47,7 +47,8 @@ jobs:
     steps: 
     - if: ${{ runner.os == 'Windows' }}
       run: echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-    - run: |
+    - name: Setup bashenv
+      run: |
         BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc"
         touch $BASH_ENV
         echo 'echo "Welcome to BASH_ENV"' >> $BASH_ENV
@@ -57,7 +58,7 @@ jobs:
         MSYSTEM: ${{ matrix.msystem }}
       run: |
         echo "export MSYSTEM=$MSYSTEM" >> $BASH_ENV
-        echo "source /c/msys64/etc/msystem" >> $BASH_ENV
+        echo "source /etc/msystem" >> $BASH_ENV
     - run: |
         cat $BASH_ENV
         (env | grep '^MSYSTEM') || echo "no msystem found"
