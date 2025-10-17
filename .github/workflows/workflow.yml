@@ -29,10 +29,10 @@ jobs:
         include:
           - name: "windows-msvc"
             os: "windows-latest"
-            shell: 'C:\msys64\usr\bin\bash.exe -leo pipefail {0}'
+            msystem: "MSYS"
           - name: "windows-mingw"
             os: "windows-latest"
-            shell: 'C:\msys64\usr\bin\bash.exe -leo pipefail {0}'
+            msystem: "UCRT64"
           - name: "linux"
             os: "ubuntu-latest"
           - name: "macos-arm64"
@@ -47,54 +47,21 @@ jobs:
     steps: 
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: Setup direnv
-      env:
-        DIRENV_GITHUB_API_TOKEN: ${{ github.token }}
-      run: |
-        CWD=$(pwd)
-        curl https://direnv.net/install.sh | sed '32s#mingw\*#mingw\*\|msys\*#' | bash
-        echo 'echo "Github Action Workflow bashrc"' >> ./.bashrc
-        echo 'eval "$(direnv hook bash)"' >> ./.bashrc
-        echo BASH_ENV=$(pwd)/.bashrc >> "$GITHUB_ENV"
     - run: |
-        touch .envrc
-        direnv allow .
-        direnv export gha > "$GITHUB_ENV"
-    - name: run setup settings
+        BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc
+        touch $BASH_ENV
+        echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
+    - if: ${{ runner.os == "Windows" }}
+      env:
+        MSYSTEM: ${{ matrix.msystem }}
       run: |
-        echo "BASH_ENV=$BASH_ENV"
-        echo "ENV=$ENV"
-        echo "==="
-        cat $DIRENV_FILE
-        echo "==="
-        echo "BAR=bar" >> .env
-        echo "==="
-    - name: Test
-      run: |
-        echo "BASH_ENV=$BASH_ENV"
-        echo "FOO='$FOO'"
-        echo "BAR='$BAR'"
-    - name: Setup common environment
-      run: |
-         CWD=$(cd $RUNNER_WORKSPACE; pwd)
-         echo "FULL_NAME=${{ env.PROJECT_NAME }}-qt${{ matrix.qt-version }}-${{ matrix.name }}" >> $CWD/project.env
-    - name: install-dependencies
-      run: echo "PWD=$(pwd)"
-    - name: setup control artifacts
-      run: |
-        CWD=$(cd $RUNNER_WORKSPACE; pwd)
-        export ARTIFACTS_DIR=$CWD/out
-        [ ! -e $ARTIFACTS_DIR ] && mkdir -p $ARTIFACTS_DIR
-        echo "::notice::Save to $ARTIFACTS_DIR"
-        echo '${{ toJSON(env) }}' >> $ARTIFACTS_DIR/env.json
-        echo '${{ toJSON(github) }}' >> $ARTIFACTS_DIR/github.json
-        echo '${{ toJSON(runner) }}' >> $ARTIFACTS_DIR/runner.json
-        env | sort >> $ARTIFACTS_DIR/environment
-        echo "ARTIFACTS_DIR=$ARTIFACTS_DIR" >> $CWD/project.env
-        cat $CWD/project.env >> $GITHUB_ENV
-
-    - name: Uploading ${{ env.FULL_NAME }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: "${{ env.FULL_NAME }}"
-        path: "${{ runner.workspace }}/out/*"
+        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        echo "MSYSTEM=$MSYSTEM" >> $GITHUB_ENV
+    - run: |
+        (env | grep '^MSYSTEM') || echo "no msystem found"
+        
+#    - name: Uploading
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: "${{ env.FULL_NAME }}"
+#        path: "${{ runner.workspace }}/out/*"
