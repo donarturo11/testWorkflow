@@ -43,7 +43,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: bash --login {0}
+        shell: bash
     steps: 
     - if: ${{ runner.os == 'Windows' }}
       run: echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
