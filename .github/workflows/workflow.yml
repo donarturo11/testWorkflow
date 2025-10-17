@@ -29,7 +29,7 @@ jobs:
         include:
           - name: "windows-msvc"
             os: "windows-latest"
-            msystem: "MSVC"
+            msystem: "MSYS"
           - name: "windows-mingw"
             os: "windows-latest"
             msystem: "UCRT64"
