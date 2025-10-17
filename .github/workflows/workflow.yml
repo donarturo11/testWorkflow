@@ -50,11 +50,10 @@ jobs:
         BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc"
         touch $BASH_ENV
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
-    - if: ${{ runner.os == 'Windows' }}
-      run: |
-        echo "export MSYSTEM=${{ matrix.msystem }}" >> $BASH_ENV
-        echo "source /c/msys64/etc/msystem" >> $BASH_ENV
-        which vswhere || echo "vswhere not found"
+        if [[ $RUNNER_OS == "Windows" ]]; then
+          echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
+          echo "source /c/msys64/etc/msystem" >> $BASH_ENV
+        fi
     - name: uname
       run: |
         echo UNAME_S=$(uname -s)
