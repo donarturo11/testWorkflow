@@ -45,6 +45,8 @@ jobs:
       run:
         shell: bash
     steps: 
+    - if: ${{ runner.os == 'Windows' }}
+      run: echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
     - name: Checkout repository
       uses: actions/checkout@v4
     - run: |
@@ -54,8 +56,6 @@ jobs:
     - if: ${{ runner.os == 'Windows' }}
       env:
         MSYSTEM: ${{ matrix.msystem }}
-      run: |
-        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo "export MSYSTEM=$MSYSTEM" >> $BASH_ENV
         echo "source /c/msys64/etc/msystem" > $BASH_ENV
         
