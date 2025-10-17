@@ -59,7 +59,7 @@ jobs:
         echo UNAME_S=$(uname -s)
         echo UNAME_M=$(uname -m)
         echo UNAME_O=$(uname -o)
-    - run: (env | grep -e '^MSYSTEM' -e '^MINGW' ) || echo "no msystem found"
+    - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
         
