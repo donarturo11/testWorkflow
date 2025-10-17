@@ -48,7 +48,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
     - run: |
-        BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc
+        BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc"
         touch $BASH_ENV
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
     - if: ${{ runner.os == 'Windows' }}
