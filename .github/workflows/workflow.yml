@@ -51,8 +51,8 @@ jobs:
         touch $BASH_ENV
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
         if [[ $RUNNER_OS == "Windows" ]]; then
-          echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
-          echo "export MSYSTEM; source /c/msys64/etc/msystem" >> $BASH_ENV
+          echo "export MSYSTEM=${{ matrix.msystem }}" >> $BASH_ENV
+          echo "source /c/msys64/etc/msystem" >> $BASH_ENV
         fi
     - name: uname
       run: |
