@@ -47,21 +47,21 @@ jobs:
     steps: 
     - if: ${{ runner.os == 'Windows' }}
       run: echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-    - name: Checkout repository
-      uses: actions/checkout@v4
     - run: |
         BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc"
         touch $BASH_ENV
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
     - if: ${{ runner.os == 'Windows' }}
       env:
+      run: |
         MSYSTEM: ${{ matrix.msystem }}
         echo "export MSYSTEM=$MSYSTEM" >> $BASH_ENV
         echo "source /c/msys64/etc/msystem" > $BASH_ENV
-        
     - run: |
         cat $BASH_ENV
         (env | grep '^MSYSTEM') || echo "no msystem found"
+    - name: Checkout repository
+      uses: actions/checkout@v4
         
 #    - name: Uploading
 #      uses: actions/upload-artifact@v4
