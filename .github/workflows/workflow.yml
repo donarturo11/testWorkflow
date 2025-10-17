@@ -51,7 +51,7 @@ jobs:
         BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc
         touch $BASH_ENV
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
-    - if: ${{ runner.os == "Windows" }}
+    - if: ${{ runner.os == 'Windows' }}
       env:
         MSYSTEM: ${{ matrix.msystem }}
       run: |
