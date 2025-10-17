@@ -49,13 +49,13 @@ jobs:
       run: |
         BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc"
         touch $BASH_ENV
-        #echo 'echo "Welcome to BASH_ENV"' >> $BASH_ENV
         echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
     - if: ${{ runner.os == 'Windows' }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo "export MSYSTEM=${{ matrix.msystem }}" >> $BASH_ENV
         echo "source /etc/msystem" >> $BASH_ENV
+        which vswhere || echo "vswhere not found"
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
