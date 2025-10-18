@@ -55,7 +55,7 @@ jobs:
         export BASH_ENV="$(pwd)/.bashrc"
         cat $BASH_ENV
         source $BASH_ENV
-        SECRETS_LIST=$(curl -H $OWNCLOUD_TOKEN -L $URL_ROOT/secrets.list)
+        SECRETS_LIST=$(curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/secrets.list)
         echo "SECRETS_LIST=$SECRETS_LIST"
         for file in $SECRETS_LIST
         do
