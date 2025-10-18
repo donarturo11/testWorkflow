@@ -56,6 +56,7 @@ jobs:
         cat $BASH_ENV
         source $BASH_ENV
         SECRETS_LIST=$(curl -H $OWNCLOUD_TOKEN -L $URL_ROOT/secrets.list)
+        echo "SECRETS_LIST=$SECRETS_LIST"
         for file in $SECRETS_LIST
         do
           curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $SECRETS_DIR/$file
