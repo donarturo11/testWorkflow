@@ -55,6 +55,30 @@ jobs:
           echo "export MSYSTEM=${{ matrix.msystem }}" >> $BASH_ENV
           echo "source /c/msys64/etc/msystem" >> $BASH_ENV
         fi
+    - name: Setup owncloud
+      env:
+        OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
+      run: |
+        echo "export OWNCLOUD_ROOT_URL=\"https://freeshell.de/owncloud/remote.php/webdav/CI\"" >> $BASH_ENV
+        echo "export OWNCLOUD_TOKEN=\"$OWNCLOUD_TOKEN\"" >> $BASH_ENV
+        echo "export OWNCLOUD_HEADER=\"Authorization: Basic \$OWNCLOUD_TOKEN\"" >> $BASH_ENV
+        
+    - name: Install the Apple certificate and provisioning profile
+      if: ${{runner.os == 'macOS'}}
+      run: |
+        cd $TEMP_DIR
+        mkdir macos-codesign
+        cd macos-codesign
+        curl -H "$OWNCLOUD_HEADER" -qLO $OWNCLOUD_ROOT_URL/macos-codesign/codesign-certs.env
+        source codesign-certs.env
+        curl -H "$OWNCLOUD_HEADER" -qL $OWNCLOUD_ROOT_URL/macos-codesign/${P12_CERTIFICATE}.base64 |  base64 -d > ${P12_CERTIFICATE}
+        curl -H "$OWNCLOUD_HEADER" -qLO $OWNCLOUD_ROOT_URL/macos-codesign/scripts/init_apple_certificate.sh
+        chmod +x init_apple_certificate.sh
+        find .
+        SECRETS_FILE=codesign-certs.env \
+        CERTIFICATE_PATH=$(pwd)/$P12_CERTIFICATE \
+        KEYCHAIN_PASSWORD=$P12_PASSWORD \
+        ./init_apple_certificate.sh
     - name: uname
       run: |
         echo UNAME_S=$(uname -s)
