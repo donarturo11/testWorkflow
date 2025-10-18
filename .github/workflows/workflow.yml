@@ -59,7 +59,7 @@ jobs:
         echo "SECRETS_LIST=$SECRETS_LIST"
         for file in $SECRETS_LIST
         do
-          curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $SECRETS_DIR/$file
+          curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $file
         done
     - name: Install the Apple certificate and provisioning profile
       if: ${{runner.os == 'macOS'}}
