@@ -53,6 +53,7 @@ jobs:
         export URL_ROOT=https://freeshell.de/owncloud/remote.php/CI/common/
         curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc > .bashrc
         export BASH_ENV="$(pwd)/.bashrc"
+        cat $BASH_ENV
         source $BASH_ENV
         SECRETS_LIST=$(curl -H $OWNCLOUD_TOKEN -L $URL_ROOT/secrets.list)
         for file in $SECRETS_LIST
