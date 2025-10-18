@@ -45,24 +45,20 @@ jobs:
       run:
         shell: bash
     steps: 
-    - name: Setup bashenv
-      run: |
-        BASH_ENV="$(cd $RUNNER_TEMP; pwd)/.bashrc"
-        touch $BASH_ENV
-        echo BASH_ENV="$BASH_ENV" >> $GITHUB_ENV
-        if [[ $RUNNER_OS == "Windows" ]]; then
-          echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-          echo "export MSYSTEM=${{ matrix.msystem }}" >> $BASH_ENV
-          echo "source /c/msys64/etc/msystem" >> $BASH_ENV
-        fi
-    - name: Setup owncloud
+    - name: Setup runner
       env:
         OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
       run: |
-        echo "export OWNCLOUD_ROOT_URL=\"https://freeshell.de/owncloud/remote.php/webdav/CI\"" >> $BASH_ENV
-        echo "export OWNCLOUD_TOKEN=\"$OWNCLOUD_TOKEN\"" >> $BASH_ENV
-        echo "export OWNCLOUD_HEADER=\"Authorization: Basic \$OWNCLOUD_TOKEN\"" >> $BASH_ENV
-        
+        cd $RUNNER_TEMP
+        export URL_ROOT=https://freeshell.de/owncloud/remote.php/CI/common/
+        curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc > .bashrc
+        export BASH_ENV="$(pwd)/.bashrc"
+        source $BASH_ENV
+        SECRETS_LIST=$(curl -H $OWNCLOUD_TOKEN -L $URL_ROOT/secrets.list)
+        for file in $SECRETS_LIST
+        do
+          curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $SECRETS_DIR/$file
+        done
     - name: Install the Apple certificate and provisioning profile
       if: ${{runner.os == 'macOS'}}
       run: |
