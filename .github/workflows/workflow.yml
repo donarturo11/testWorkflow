@@ -50,7 +50,7 @@ jobs:
         OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
       run: |
         cd $RUNNER_TEMP
-        export URL_ROOT=https://freeshell.de/owncloud/remote.php/CI/common/
+        export URL_ROOT=https://freeshell.de/owncloud/remote.php/webdav/CI/common/
         curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc > .bashrc
         export BASH_ENV="$(pwd)/.bashrc"
         cat $BASH_ENV
