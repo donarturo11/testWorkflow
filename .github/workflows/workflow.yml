@@ -102,7 +102,7 @@ jobs:
         echo UNAME_M=$(uname -m)
         echo UNAME_O=$(uname -o)
     - name: clang dump machine
-      run: clang -dumpmachine
+      run: which clang; clang -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
