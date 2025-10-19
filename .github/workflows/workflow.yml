@@ -62,7 +62,6 @@ jobs:
         export URL_ROOT=https://freeshell.de/owncloud/remote.php/webdav/CI/common/
         curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc > .bashrc
         export BASH_ENV="$(pwd)/.bashrc"
-        cat $BASH_ENV
         source $BASH_ENV
         SECRETS_LIST=$(curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/secrets.list)
         echo "SECRETS_LIST=$SECRETS_LIST"
@@ -72,9 +71,10 @@ jobs:
         done
         if [[ -n $MSYSTEM ]]; then
           echo "/c/msys64/usr/bin" >> $GITHUB_PATH
-          echo "MSYSTEM=$MATRIX_MSYSTEM" >> $BASH_ENV
+          echo "export MSYSTEM=$MATRIX_MSYSTEM" >> $BASH_ENV
           echo "source /c/msys64/etc/profile" >> $BASH_ENV
         fi
+        cat $BASH_ENV
         echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
     - name: Install the Apple certificate and provisioning profile
       if: ${{runner.os == 'macOS'}}
