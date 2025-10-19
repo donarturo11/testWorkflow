@@ -72,6 +72,8 @@ jobs:
         if [[ -n $MSYSTEM ]]; then
           echo "/c/msys64/usr/bin" >> $GITHUB_PATH
           echo "export MSYSTEM=$MATRIX_MSYSTEM" >> $BASH_ENV
+          echo "export MSYS2_PATH_TYPE=inherit" >> $BASH_ENV
+          export "CHERE_INVOKING=1" >> $BASH_ENV
           echo "source /c/msys64/etc/profile" >> $BASH_ENV
         fi
         cat $BASH_ENV
