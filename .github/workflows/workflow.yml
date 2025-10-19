@@ -30,6 +30,8 @@ jobs:
           - name: "windows-msvc"
             os: "windows-latest"
             msystem: "MSYS"
+            cc: "cl"
+            cxx: "cl"
           - name: "windows-mingw"
             os: "windows-latest"
             msystem: "UCRT64"
@@ -37,8 +39,12 @@ jobs:
             os: "ubuntu-latest"
           - name: "macos-arm64"
             os: "macos-14"
+            cc: "clang"
+            cxx: "clang++"
           - name: "macos-x86_64"
             os: "macos-13"
+            cc: "clang"
+            cxx: "clang++"
 
     runs-on: ${{ matrix.os }}
     defaults:
@@ -48,6 +54,9 @@ jobs:
     - name: Setup runner
       env:
         OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
+        MSYSTEM: ${{ matrix.msystem }}
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
       run: |
         cd $RUNNER_TEMP
         export URL_ROOT=https://freeshell.de/owncloud/remote.php/webdav/CI/common/
@@ -84,6 +93,8 @@ jobs:
         echo UNAME_S=$(uname -s)
         echo UNAME_M=$(uname -m)
         echo UNAME_O=$(uname -o)
+    - name: clang dump machine
+      run: clang -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
