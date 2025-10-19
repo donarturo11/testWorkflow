@@ -74,20 +74,21 @@ jobs:
     - name: Install the Apple certificate and provisioning profile
       if: ${{runner.os == 'macOS'}}
       run: |
-        cd $TEMP_DIR
-        mkdir macos-codesign
-        cd macos-codesign
-        curl -H "$OWNCLOUD_HEADER" -qLO $OWNCLOUD_ROOT_URL/macos-codesign/certificates.env
-        source certificates.env
-        curl -H "$OWNCLOUD_HEADER" -qL $OWNCLOUD_ROOT_URL/macos-codesign/${P12_CERTIFICATE}.base64 |  base64 -d > ${P12_CERTIFICATE}
-        curl -H "$OWNCLOUD_HEADER" -qLO $OWNCLOUD_ROOT_URL/macos-codesign/scripts/init_apple_certificate.sh
-        chmod +x init_apple_certificate.sh
-        find .
-        SECRETS_FILE=certificates.env \
-        CERTIFICATE_PATH=$(pwd)/$P12_CERTIFICATE \
-        KEYCHAINS_DIR=$(pwd) \
-        KEYCHAIN_PASSWORD=$P12_PASSWORD \
-        ./init_apple_certificate.sh
+        echo
+        #cd $TEMP_DIR
+        #mkdir macos-codesign
+        #cd macos-codesign
+        #curl -H "$OWNCLOUD_HEADER" -qLO $OWNCLOUD_ROOT_URL/macos-codesign/certificates.env
+        #source certificates.env
+        #curl -H "$OWNCLOUD_HEADER" -qL $OWNCLOUD_ROOT_URL/macos-codesign/${P12_CERTIFICATE}.base64 |  base64 -d > ${P12_CERTIFICATE}
+        #curl -H "$OWNCLOUD_HEADER" -qLO $OWNCLOUD_ROOT_URL/macos-codesign/scripts/init_apple_certificate.sh
+        #chmod +x init_apple_certificate.sh
+        #find .
+        #SECRETS_FILE=certificates.env \
+        #CERTIFICATE_PATH=$(pwd)/$P12_CERTIFICATE \
+        #KEYCHAINS_DIR=$(pwd) \
+        #KEYCHAIN_PASSWORD=$P12_PASSWORD \
+        #./init_apple_certificate.sh
     - name: uname
       run: |
         echo UNAME_S=$(uname -s)
