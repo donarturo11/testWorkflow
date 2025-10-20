@@ -52,6 +52,7 @@ jobs:
     - name: setup bashenv
       run: echo "BASH_ENV='$(cd $RUNNER_TEMP; pwd)/.bashrc'" >> $GITHUB_ENV
     - name: Setup runner
+      env:
         MATRIX_MSYSTEM: ${{ matrix.msystem }}
         OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
       run: |
