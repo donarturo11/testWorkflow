@@ -33,7 +33,7 @@ jobs:
           - name: "windows-mingw"
             os: "windows-latest"
             msystem: "UCRT64"
-          - name: "linux"
+          - name: "linux-x86_64"
             os: "ubuntu-latest"
           - name: "macos-arm64"
             os: "macos-14"
@@ -49,15 +49,15 @@ jobs:
       run:
         shell: bash
     steps: 
+    - name: setup bashenv
+      run: echo "BASH_ENV='$(cd $RUNNER_TEMP; pwd)/.bashrc'" >> $GITHUB_ENV
     - name: Setup runner
-      env:
-        OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
         MATRIX_MSYSTEM: ${{ matrix.msystem }}
+        OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
       run: |
         cd $RUNNER_TEMP
         export URL_ROOT=https://freeshell.de/owncloud/remote.php/webdav/CI/common/
-        curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc > .bashrc
-        export BASH_ENV="$(pwd)/.bashrc"
+        curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc >> $BASH_ENV
         source $BASH_ENV
         SECRETS_LIST=$(curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/secrets.list)
         echo "SECRETS_LIST=$SECRETS_LIST"
@@ -65,15 +65,13 @@ jobs:
         do
           curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $file
         done
-        if [[ -n $MSYSTEM ]]; then
-          #echo "/c/msys64/usr/bin" >> $GITHUB_PATH
-          echo "export MSYSTEM=$MATRIX_MSYSTEM" >> $PROFILE_DIR/00-toolchain.sh
-          echo "export MSYS2_PATH_TYPE=inherit" >> $PROFILE_DIR/00-toolchain.sh
-          export "CHERE_INVOKING=1" >> $PROFILE_DIR/00-toolchain.sh
-          echo "source /c/msys64/etc/profile" >> $PROFILE_DIR/00-toolchain.sh
+        if [[ -n $MATRIX_MSYSTEM ]]; then
+          echo "export MSYSTEM=$MATRIX_MSYSTEM" >> $TOOLCHAIN_ENV
+          echo "export MSYS2_PATH_TYPE=inherit" >> $TOOLCHAIN_ENV
+          echo "export CHERE_INVOKING=1"        >> $TOOLCHAIN_ENV
+          echo "source /c/msys64/etc/profile"   >> $TOOLCHAIN_ENV
         fi
         cat $BASH_ENV
-        echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
     - name: Install the Apple certificate and provisioning profile
       if: ${{runner.os == 'macOS'}}
       run: |
