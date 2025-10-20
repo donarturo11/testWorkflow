@@ -60,7 +60,7 @@ jobs:
         echo "SECRETS_LIST=$SECRETS_LIST"
         for file in $SECRETS_LIST
         do
-          curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $SECRETS_DIR/$file
+          curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/$file > $SECRETS_DIR/$(basename $file)
         done
         if [[ -n $MATRIX_MSYSTEM ]]; then
           echo "export MSYSTEM=$MATRIX_MSYSTEM" >> $TOOLCHAIN_ENV
