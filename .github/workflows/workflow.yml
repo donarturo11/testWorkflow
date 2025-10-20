@@ -25,7 +25,7 @@ jobs:
   build:
     strategy:
       matrix:
-        name: [ "windows-msvc", "windows-mingw", "linux", "macos-arm64", "macos-x86_64" ]
+        name: [ "windows-msvc", "windows-mingw", "linux-x86_64", "macos-arm64", "macos-x86_64" ]
         include:
           - name: "windows-msvc"
             os: "windows-latest"
