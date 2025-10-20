@@ -37,12 +37,8 @@ jobs:
             os: "ubuntu-latest"
           - name: "macos-arm64"
             os: "macos-14"
-            cc: "clang"
-            cxx: "clang++"
           - name: "macos-x86_64"
             os: "macos-13"
-            cc: "clang"
-            cxx: "clang++"
 
     runs-on: ${{ matrix.os }}
     defaults:
@@ -50,13 +46,13 @@ jobs:
         shell: bash
     steps: 
     - name: setup bashenv
-      run: echo "BASH_ENV='$(cd $RUNNER_TEMP; pwd)/.bashrc'" >> $GITHUB_ENV
+      run: |
+        echo "BASH_ENV='$(cd $RUNNER_TEMP; pwd)/.bashrc'" >> $GITHUB_ENV
     - name: Setup runner
       env:
         MATRIX_MSYSTEM: ${{ matrix.msystem }}
         OWNCLOUD_TOKEN: ${{ secrets.OWNCLOUD_TOKEN }}
       run: |
-        cd $RUNNER_TEMP
         export URL_ROOT=https://freeshell.de/owncloud/remote.php/webdav/CI/common/
         curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc >> $BASH_ENV
         source $BASH_ENV
