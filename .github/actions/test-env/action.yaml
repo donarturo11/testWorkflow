@@ -8,6 +8,6 @@ runs:
   using: composite
   steps:
   - shell: bash
-    run: echo ${{ toJSON(inputs) }}
+    run: echo '${{ toJSON(inputs) }}'
   - shell: bash
     run: env | sort
