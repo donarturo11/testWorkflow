@@ -53,8 +53,10 @@ jobs:
         MSYSTEM: ${{ matrix.msystem }}
       run: python
         import os
-        print(f"PROFILE_NAME={os.environ.get(\"PROFILE_NAME\", \"default\")}")
-        print(f"MSYSTEM={os.environ.get(\"MSYSTEM\", \"\")}")
+        PROFILE_NAME=os.environ.get("PROFILE_NAME", "default")
+        MSYSTEM=os.environ.get("MSYSTEM", "")
+        print(f"PROFILE_NAME={PROFILE_NAME}")
+        print(f"MSYSTEM={MSYSTEM}")
     - name: setup bashenv
       run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
     - name: Test variables
