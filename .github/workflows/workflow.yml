@@ -64,7 +64,11 @@ jobs:
         _env=f'''
         export PROFILE_NAME={os.environ.get("PROFILE_NAME", "default")}
         export MSYSTEM={os.environ.get("MSYSTEM", "")}
-        [[ -n $MSYSTEM ]] && source /c/msys64/etc/profile
+        if [[ -n $MSYSTEM ]]; then
+          export MSYS_PATH_TYPE=inherit
+          export CHERE_INVOKING=1
+          source /c/msys64/etc/profile
+        fi
         '''
         print(_env)
         with open(os.environ.get("BASH_ENV"), "a") as gh_env:
