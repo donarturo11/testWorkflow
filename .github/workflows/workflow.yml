@@ -47,6 +47,8 @@ jobs:
       run:
         shell: bash
     steps: 
+    - name: setup bashenv
+      run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
     - name: setup profile variables
       env:
         PROFILE_NAME: ${{ matrix.name }}
@@ -62,8 +64,7 @@ jobs:
         print(_env)
         with open(os.environ.get("BASH_ENV"), "a") as gh_env:
           gh_env.write(_env)
-    - name: setup bashenv
-      run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
+    
     - name: Test variables
       shell: bash --norc --noprofile {0}
       env:
