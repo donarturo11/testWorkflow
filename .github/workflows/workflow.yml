@@ -54,10 +54,13 @@ jobs:
       shell: python
       run: |
         import os
-        PROFILE_NAME=os.environ.get("PROFILE_NAME", "default")
-        MSYSTEM=os.environ.get("MSYSTEM", "")
-        print(f"PROFILE_NAME={PROFILE_NAME}")
-        print(f"MSYSTEM={MSYSTEM}")
+        _env=f'''
+        PROFILE_NAME={os.environ.get("PROFILE_NAME", "default")}
+        MSYSTEM={os.environ.get("MSYSTEM", "")}
+        '''
+        print(_env)
+        with open(os.environ.get("GITHUB_ENV", "a") as gh_env:
+          gh_env.write(_env)
     - name: setup bashenv
       run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
     - name: Test variables
