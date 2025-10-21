@@ -57,35 +57,12 @@ jobs:
         touch $BASH_ENV
         echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
         
-    - name: setup profile variables
-      env:
-        PROFILE_NAME: ${{ matrix.name }}
-        MSYSTEM: ${{ matrix.msystem }}
-        BASH_ENV: '${{runner.workspace}}/.bashrc'
-      shell: python
-      run: |
-        import os
-        bash_env=f'''
-        export PROFILE_NAME={os.environ.get("PROFILE_NAME", "default")}
-        export MSYSTEM={os.environ.get("MSYSTEM", "")}
-        if [[ -n $MSYSTEM ]]; then
-          export MSYS2_PATH_TYPE=inherit
-          export CHERE_INVOKING=1
-          source /c/msys64/etc/profile
-        fi
-        '''
-        print(bash_env)
-        with open(os.environ.get("BASH_ENV"), "w") as f:
-          f.write(bash_env)
-        with open(os.environ.get("GITHUB_ENV"), "a") as f:
-          f.write(f"BASH_ENV={os.environ.get('BASH_ENV')}")
+    
     
     - name: Test variables
       shell: bash --norc --noprofile {0}
-      env:
-        MSYSTEM: ${{ matrix.msystem }}
       run: |
-        echo MSYSTEM=$MSYSTEM
+        (env | grep -e '^MSYS' -e '^MINGW') || echo ""
     - name: Get host infos
       run: |
         echo "OSTYPE=$OSTYPE"
