@@ -11,7 +11,7 @@ runs:
     run: pip install dotenv
   - shell: python
     run: |
-      import subprocess, dotenv, json
+      import subprocess, os, dotenv, json
       inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
       secrets=json.loads(''' ${{ toJSON(github.secrets) }} ''')
       env=json.loads(''' ${{ toJSON(env) }} ''')
@@ -19,6 +19,6 @@ runs:
       print(env)
       print(secrets)
       for k, v in inputs.items():
-        dotenv.set_key(".env", k, v)
+        dotenv.set_key(os.environ.getenv("GITHUB_ENV"), k, v)
   - shell: bash
     run: cat .env
