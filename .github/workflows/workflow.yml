@@ -86,10 +86,10 @@ jobs:
         echo UNAME_S=$(uname -s)
         echo UNAME_M=$(uname -m)
         echo UNAME_O=$(uname -o)
-    - uses: donarturo11/testWorkflow/.github/actions/test-env@main
-      with:
-        var1: 'val1'
-        var2: 'val2'
+#    - uses: donarturo11/testWorkflow/.github/actions/test-env@main
+#      with:
+#        var1: 'val1'
+#        var2: 'val2'
     - name: clang dump machine
       run: which clang; clang -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
