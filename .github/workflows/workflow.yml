@@ -50,9 +50,11 @@ jobs:
     - name: setup bashenv
       run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
     - name: Test variables
+      shell: bash --norc --noprofile {0}
       env:
         MSYSTEM: ${{ matrix.msystem }}
-      run: env | sort | grep -e '^MSYSTEM' -e '^MINGW'
+      run: |
+        echo MSYSTEM=$MSYSTEM
     - name: Setup runner
       env:
         MATRIX_MSYSTEM: ${{ matrix.msystem }}
