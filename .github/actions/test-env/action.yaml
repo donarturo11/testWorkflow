@@ -19,6 +19,6 @@ runs:
       print(env)
       print(secrets)
       for k, v in inputs.items():
-        dotenv.set_key(os.environ.getenv("GITHUB_ENV"), k, v)
+        dotenv.set_key(os.environ.get("GITHUB_ENV"), k, v)
   - shell: bash
     run: cat .env
