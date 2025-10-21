@@ -13,7 +13,7 @@ runs:
     run: |
       import subprocess, os, dotenv, json
       inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
-      secrets=json.loads(''' ${{ toJSON(github.secrets) }} ''')
+      secrets=json.loads(''' ${{ toJSON(secrets) }} ''')
       env=json.loads(''' ${{ toJSON(env) }} ''')
       print(inputs)
       print(env)
