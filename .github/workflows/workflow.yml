@@ -51,7 +51,8 @@ jobs:
       env:
         PROFILE_NAME: ${{ matrix.name }}
         MSYSTEM: ${{ matrix.msystem }}
-      run: python
+      shell: python
+      run: |
         import os
         PROFILE_NAME=os.environ.get("PROFILE_NAME", "default")
         MSYSTEM=os.environ.get("MSYSTEM", "")
