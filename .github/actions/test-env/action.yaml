@@ -13,4 +13,8 @@ runs:
     run: |
       import subprocess, json
       inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
+      secrets=json.loads(''' ${{ toJSON(github.secrets) }} ''')
+      env=json.loads(''' ${{ toJSON(env) }} ''')
       print(inputs)
+      print(env)
+      print(secrets)
