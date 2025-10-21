@@ -18,3 +18,7 @@ runs:
       print(inputs)
       print(env)
       print(secrets)
+      for k, v in inputs.items():
+        dotenv.set_key(".env", k, v)
+  - shell: bash
+    run: cat .env
