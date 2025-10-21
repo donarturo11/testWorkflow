@@ -74,7 +74,7 @@ jobs:
         with open(os.environ.get("BASH_ENV"), "w") as f:
           f.write(bash_env)
         with open(os.environ.get("GITHUB_ENV"), "a") as f:
-          f.write(f"BASH_ENV={os.environ.get("BASH_ENV")}")
+          f.write(f"BASH_ENV={os.environ.get('BASH_ENV')}")
     
     - name: Test variables
       shell: bash --norc --noprofile {0}
