@@ -10,6 +10,6 @@ runs:
   - shell: python
     run: |
       import dotenv, json
-      inputs=json.loads('${{ toJSON(inputs) }}')
+      inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
   - shell: bash
     run: env | sort
