@@ -79,12 +79,9 @@ jobs:
         echo UNAME_S=$(uname -s)
         echo UNAME_M=$(uname -m)
         echo UNAME_O=$(uname -o)
-    - run: |
-        cd $RUNNER_WORKSPACE
-        echo "echo 'running script'" >> test-script.sh
-        echo "TEST_SCRIPT=$(pwd)/test-script.sh" >> $GITHUB_ENV
+    - run: echo "echo 'running script'" >> test-script.sh
     - name: shell
-      shell: bash --noprofile --norc ${{ env.TEST_SCRIPT }}
+      shell: bash --noprofile --norc test-script.sh
     - uses: donarturo11/testWorkflow/.github/actions/test-env@main
       with:
         var1: 'val1'
