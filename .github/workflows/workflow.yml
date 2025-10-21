@@ -57,6 +57,7 @@ jobs:
       env:
         PROFILE_NAME: ${{ matrix.name }}
         MSYSTEM: ${{ matrix.msystem }}
+        BASH_ENV: '${{runner.workspace}}/.bashrc'
       shell: python
       run: |
         import os
