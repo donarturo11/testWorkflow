@@ -13,10 +13,8 @@ runs:
     run: |
       import subprocess, os, dotenv, json
       inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
-      secrets=json.loads(''' ${{ toJSON(secrets) }} ''')
       env=json.loads(''' ${{ toJSON(env) }} ''')
       print(inputs)
       print(env)
-      print(secrets)
       for k, v in inputs.items():
         dotenv.set_key(os.environ.get("GITHUB_ENV"), f"INPUTS_{k.upper()}", v)
