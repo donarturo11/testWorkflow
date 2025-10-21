@@ -82,6 +82,7 @@ jobs:
     - run: echo "echo 'running script'" >> test-script.sh
     - name: shell
       shell: bash --noprofile --norc test-script.sh
+      run: ''
     - uses: donarturo11/testWorkflow/.github/actions/test-env@main
       with:
         var1: 'val1'
