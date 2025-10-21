@@ -4,12 +4,10 @@ inputs:
     description: Tag for packages
   var2:
     description: Space separated package names
-
+defaults:
+  shell: bash
 runs:
   using: composite
   steps:
   - run: echo ${{ toJSON(inputs) }}
-  - name: test env
-    shell: bash
-    run: |
-        env | sort
+  - run: env | sort
