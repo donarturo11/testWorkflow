@@ -6,8 +6,6 @@ inputs:
     description: Space separated package names
 runs:
   using: composite
-  defaults:
-    shell: bash
   steps:
-  - run: echo ${{ toJSON(inputs) }}
-  - run: env | sort
+  - {shell: bash, run: echo ${{ toJSON(inputs) }}}
+  - {shell: bash, run: env | sort}
