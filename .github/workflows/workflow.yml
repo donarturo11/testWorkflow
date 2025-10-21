@@ -48,7 +48,11 @@ jobs:
         shell: bash
     steps: 
     - name: setup bashenv
-      run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
+      run: |
+        BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
+        touch $BASH_ENV
+        echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
+        
     - name: setup profile variables
       env:
         PROFILE_NAME: ${{ matrix.name }}
@@ -62,7 +66,7 @@ jobs:
         [[ -n $MSYSTEM ]] && source /c/msys64/etc/profile
         '''
         print(_env)
-        with open(os.environ.get("BASH_ENV"), "w") as gh_env:
+        with open(os.environ.get("BASH_ENV"), "a") as gh_env:
           gh_env.write(_env)
     
     - name: Test variables
