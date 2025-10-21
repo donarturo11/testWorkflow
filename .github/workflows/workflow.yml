@@ -61,7 +61,7 @@ jobs:
       shell: python
       run: |
         import os
-        _env=f'''
+        bash_env=f'''
         export PROFILE_NAME={os.environ.get("PROFILE_NAME", "default")}
         export MSYSTEM={os.environ.get("MSYSTEM", "")}
         if [[ -n $MSYSTEM ]]; then
@@ -70,9 +70,11 @@ jobs:
           source /c/msys64/etc/profile
         fi
         '''
-        print(_env)
-        with open(os.environ.get("BASH_ENV"), "a") as gh_env:
-          gh_env.write(_env)
+        print(bash_env)
+        with open(os.environ.get("BASH_ENV"), "w") as f:
+          f.write(bash_env)
+        with open(os.environ.get("GITHUB_ENV"), "a") as f:
+          f.write(f"BASH_ENV={os.environ.get("BASH_ENV")}")
     
     - name: Test variables
       shell: bash --norc --noprofile {0}
