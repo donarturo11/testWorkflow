@@ -59,7 +59,7 @@ jobs:
         MSYSTEM={os.environ.get("MSYSTEM", "")}
         '''
         print(_env)
-        with open(os.environ.get("GITHUB_ENV", "a") as gh_env:
+        with open(os.environ.get("GITHUB_ENV"), "a") as gh_env:
           gh_env.write(_env)
     - name: setup bashenv
       run: echo "BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc" >> $GITHUB_ENV
