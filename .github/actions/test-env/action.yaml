@@ -7,7 +7,11 @@ inputs:
 runs:
   using: composite
   steps:
-  - shell: bash
-    run: echo '${{ toJSON(inputs) }}'
+  - shell: python
+    run: |
+      import dotenv, json
+      inputs=json.loads('${{ toJSON(inputs) }}')
+      secrets=json.loads('${{ toJSON(secrets) }}')
+      env=json.loads('${{ toJSON(secrets) }}')
   - shell: bash
     run: env | sort
