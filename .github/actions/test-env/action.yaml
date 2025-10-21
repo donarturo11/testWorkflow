@@ -12,5 +12,4 @@ runs:
       import subprocess, json
       subprocess.run("pip install dotenv", shell=True)
       inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
-  - shell: bash
-    run: env | sort
+      print(inputs)
