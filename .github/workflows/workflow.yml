@@ -58,6 +58,10 @@ jobs:
         export URL_ROOT=https://freeshell.de/owncloud/remote.php/webdav/CI/common/
         curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/bashenv.bashrc >> $BASH_ENV
         source $BASH_ENV
+        for directory in $BUILD_DIR $ARTIFACTS_DIR $SECRETS_DIR $ENVIRONMENT_DIR $PROFILE_DIR
+        do
+          [[ ! -e $directory ]] && mkdir -p $directory
+        done
         curl -H "Authorization: Basic $OWNCLOUD_TOKEN" -L $URL_ROOT/secrets.tar.gz | tar -vxz
         if [[ -n $MATRIX_MSYSTEM ]]; then
           echo "export MSYSTEM=$MATRIX_MSYSTEM" >> $TOOLCHAIN_ENV
