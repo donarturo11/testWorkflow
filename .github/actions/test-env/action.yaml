@@ -7,9 +7,10 @@ inputs:
 runs:
   using: composite
   steps:
+  - shell: bash
+    run: pip install dotenv
   - shell: python
     run: |
       import subprocess, json
-      subprocess.run("pip install dotenv", shell=True)
       inputs=json.loads(''' ${{ toJSON(inputs) }} ''')
       print(inputs)
