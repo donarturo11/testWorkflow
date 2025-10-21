@@ -47,7 +47,7 @@ jobs:
       run:
         shell: bash
     steps: 
-    - if: {{ matrix.msystem }}
+    - if: {{ matrix.msystem != '' }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
