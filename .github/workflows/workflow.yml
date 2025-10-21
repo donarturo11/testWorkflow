@@ -47,6 +47,8 @@ jobs:
       run:
         shell: bash
     steps: 
+    - if: ${{ matrix.msystem }}
+      run: echo "using msystem"
     - name: setup bashenv
       run: |
         BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
