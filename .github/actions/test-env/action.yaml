@@ -1,0 +1,14 @@
+name: Test env
+inputs:
+  var1:
+    description: Tag for packages
+  var2:
+    description: Space separated package names
+
+runs:
+  using: composite
+  steps:
+  - name: test env
+    shell: bash
+    run: |
+        env | sort
