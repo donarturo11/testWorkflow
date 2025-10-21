@@ -47,8 +47,10 @@ jobs:
       run:
         shell: bash
     steps: 
-    - if: ${{ matrix.msystem }}
-      run: echo "using msystem"
+    - if: {{ matrix.msystem }}
+      run: |
+        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: setup bashenv
       run: |
         BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
