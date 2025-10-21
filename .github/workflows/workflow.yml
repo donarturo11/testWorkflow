@@ -62,7 +62,7 @@ jobs:
         [[ -n $MSYSTEM ]] && source /c/msys64/etc/profile
         '''
         print(_env)
-        with open(os.environ.get("BASH_ENV"), "w+a") as gh_env:
+        with open(os.environ.get("BASH_ENV"), "w") as gh_env:
           gh_env.write(_env)
     
     - name: Test variables
