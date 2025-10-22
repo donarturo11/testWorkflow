@@ -50,7 +50,7 @@ jobs:
     - if: ${{ matrix.msystem }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-        /c/msys64/usr/bin/bash -lc 'pacman -Syuu clang'
+        /c/msys64/usr/bin/bash -lc 'pacman --noconfirm -Syuu clang'
         echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: setup bashenv
       run: |
