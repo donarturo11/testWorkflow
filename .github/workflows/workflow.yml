@@ -50,8 +50,6 @@ jobs:
     - if: ${{ matrix.msystem }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-        /c/msys64/usr/bin/bash -lc 'pacman --noconfirm -Syuu'
-        /c/msys64/usr/bin/bash -lc 'pacman --noconfirm -S gcc'
         echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: setup bashenv
       run: |
@@ -77,7 +75,7 @@ jobs:
 #        var1: 'val1'
 #        var2: 'val2'
     - name: dump machine
-      run: (which gcc &> /dev/null) && gcc -dumpmachine || clang -dumpmachine
+      run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
