@@ -50,15 +50,13 @@ jobs:
     - if: ${{ matrix.msystem }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        /c/msys64/usr/bin/bash -lc 'pacman -Syuu clang'
         echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: setup bashenv
       run: |
         BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
         touch $BASH_ENV
         echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
-        
-    
-    
     - name: Test variables
       shell: bash --norc --noprofile {0}
       run: |
@@ -77,8 +75,8 @@ jobs:
 #      with:
 #        var1: 'val1'
 #        var2: 'val2'
-    - name: clang dump machine
-      run: which clang; clang -dumpmachine
+    - name: dump machine
+      run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
