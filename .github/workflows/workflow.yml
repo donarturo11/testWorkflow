@@ -85,7 +85,7 @@ jobs:
         jq --version && which jq || echo "jq not found"
         yq --version && which yq || echo "yq not found"
         _dotenv_pat=". | to_entries | map(\"\(.key)='\(.value)'\") | .[]"
-        jq -r "$_dotenv_pat" <<< '${{ toJSON(secrets)' }} >> out/secrets.env
+        jq -r "$_dotenv_pat" <<< '${{ toJSON(secrets) }}' >> out/secrets.env
         jq -r "$_dotenv_pat" <<< '${{ toJSON(env) }}' >> out/env
         jq -r "$_dotenv_pat" <<< '${{ toJSON(matrix) }}' >> out/matrix.env
     - name: dump machine
