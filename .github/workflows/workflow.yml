@@ -49,6 +49,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    - uses: BSFishy/pip-action@v1
+      with:
+        packages: dotenv
     - name: set up env
       run: |
        [[ ! -e out ]] && mkdir -vp out
