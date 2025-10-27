@@ -47,14 +47,11 @@ jobs:
       run:
         shell: bash
     steps:
-    - name: check scripts
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: set up env
       run: |
-       find $RUNNER_TEMP -iname '*.sh' -print0 | while IFS= read -d '' -r script
-       do
-         echo "::group::$script"
-         cat "$script"
-         echo "::endgroup::"
-       done 
+       [[ ! -e out ]] && mkdir -vp out
     - if: ${{ matrix.msystem }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
@@ -88,14 +85,11 @@ jobs:
         jq --version && which jq || echo "jq not found"
         yq --version && which yq || echo "yq not found"
         _dotenv_pat=". | to_entries | map(\"\(.key)='\(.value)'\") | .[]"
-        [[ ! -e out ]] && mkdir out
-        jq <<< "${{ toJSON(secrets) }}"
+        echo "${{ toJSON(secrets) }}"
     - name: dump machine
       id: dump-machine
       run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
-    - name: Checkout repository
-      uses: actions/checkout@v4
     - name: check scripts 2
       id: check-scripts
       run: |
