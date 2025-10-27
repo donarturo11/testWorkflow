@@ -20,7 +20,6 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   PROJECT_NAME: test
   BUILD_TYPE: Release
-  BASH_ENV: ${{ runner.workspace }}/.bashrc
 
 jobs:
   build:
