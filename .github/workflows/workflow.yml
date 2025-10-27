@@ -83,6 +83,10 @@ jobs:
 #      with:
 #        var1: 'val1'
 #        var2: 'val2'
+    - name: test jq yq
+      run: |
+        jq --version && which jq || echo "jq not found"
+        yq --version && which yq || echo "yq not found"
     - name: dump machine
       id: dump-machine
       run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
