@@ -89,7 +89,7 @@ jobs:
         yq --version && which yq || echo "yq not found"
         _dotenv_pat=". | to_entries | map(\"\(.key)='\(.value)'\") | .[]"
         [[ ! -e out ]] && mkdir out
-        jq -r "$_dotenv_pat" <<< "${{ toJSON(secrets) }}" >> out/secrets.env
+        jq <<< "${{ toJSON(secrets) }}"
     - name: dump machine
       id: dump-machine
       run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
