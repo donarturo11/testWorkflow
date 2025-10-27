@@ -20,7 +20,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   PROJECT_NAME: test
   BUILD_TYPE: Release
-  BASH_ENV: .bashrc
+  BASH_ENV: ${{ runner.workspace }}/.bashrc
 
 jobs:
   build:
@@ -47,16 +47,24 @@ jobs:
     defaults:
       run:
         shell: bash
-    steps: 
+    steps:
+    - name: check scripts
+      run: |
+       find $RUNNER_TEMP -iname '*.sh' -print0 | while IFS= read -d '' -r script
+       do
+         echo "::group::$script"
+         cat "$script"
+         echo "::endgroup::"
+       done 
     - if: ${{ matrix.msystem }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
-#    - name: setup bashenv
-#      run: |
-#        BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
-#        touch $BASH_ENV
-#        echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
+    - name: setup bashenv
+      run: |
+        BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
+        touch $BASH_ENV
+        echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
     - name: Test variables
       shell: bash --norc --noprofile {0}
       run: |
