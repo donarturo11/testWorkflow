@@ -60,6 +60,7 @@ jobs:
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
         echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: setup bashenv
+      id: setup-bashenv
       run: |
         BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
         touch $BASH_ENV
@@ -83,11 +84,21 @@ jobs:
 #        var1: 'val1'
 #        var2: 'val2'
     - name: dump machine
+      id: dump-machine
       run: (which clang &> /dev/null) && clang -dumpmachine || gcc -dumpmachine
     - run: (env | grep -e '^MSYSTEM' -e '^MINGW' -e '^PATH' ) || echo "no msystem found"
     - name: Checkout repository
       uses: actions/checkout@v4
-        
+    - name: check scripts 2
+      id: check-scripts
+      run: |
+       find $RUNNER_TEMP -iname '*.sh' -print0 | while IFS= read -d '' -r script
+       do
+         echo "::group::$script"
+         cat "$script"
+         echo "::endgroup::"
+       done 
+    
 #    - name: Uploading
 #      uses: actions/upload-artifact@v4
 #      with:
