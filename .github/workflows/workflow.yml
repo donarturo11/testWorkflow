@@ -105,5 +105,5 @@ jobs:
     - name: Uploading
       uses: actions/upload-artifact@v4
       with:
-        name: "${{ github.run-id }}"
+        name: "${{ matrix.name }}"
         path: "out/*"
