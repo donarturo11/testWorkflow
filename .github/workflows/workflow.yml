@@ -52,6 +52,10 @@ jobs:
     - uses: BSFishy/pip-action@v1
       with:
         packages: dotenv
+    - if: ${{ matrix.msystem }}
+      run: |
+        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
+        echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: set up env
       run: |
        [[ ! -e out ]] && mkdir -vp out
@@ -64,10 +68,6 @@ jobs:
        CHOST=${CHOST:-$($(command -v gcc || command -v clang) -dumpmachine)}
        echo CARCH=$CARCH
        echo CHOST=$CHOST
-    - if: ${{ matrix.msystem }}
-      run: |
-        echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-        echo "MSYSTEM=${{ matrix.msystem }}" >> $GITHUB_ENV
     - name: setup bashenv
       id: setup-bashenv
       run: |
