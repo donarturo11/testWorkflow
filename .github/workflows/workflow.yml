@@ -62,6 +62,7 @@ jobs:
     - name: setup bashenv
       id: setup-bashenv
       run: |
+        export TMPDIR=$(cd $RUNNER_TEMP; pwd)
         BASH_ENV=$(mktemp -t .bash_env-XXXXXXXX)
         touch $BASH_ENV
         echo 'echo "bash_env"' >> $BASH_ENV
