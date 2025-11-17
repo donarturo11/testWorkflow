@@ -62,7 +62,7 @@ jobs:
     - name: setup bashenv
       id: setup-bashenv
       run: |
-        BASH_ENV=$(cd $RUNNER_WORKSPACE; pwd)/.bashrc
+        BASH_ENV=$(mktemp -t .bash_env-XXXXXXXX)
         touch $BASH_ENV
         echo "BASH_ENV=$BASH_ENV" >> $GITHUB_ENV
     - name: Test variables
