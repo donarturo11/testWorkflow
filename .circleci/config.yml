@@ -21,7 +21,7 @@ jobs:
       - run:
         name: "script"
         command: "echo BASH_ENV=$BASH_ENV"
-      - run: <
+      - run: |
           echo BASH_ENV=$BASH_ENV
           echo "Hello, World!"
       - run:
