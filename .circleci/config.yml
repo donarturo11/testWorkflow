@@ -19,8 +19,12 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run:
+          name: "echo BASH_ENV=$BASH_ENV"
+      - run:
           name: "Say hello"
-          command: "echo Hello, World!"
+          command: |
+              echo BASH_ENV=$BASH_ENV
+              echo "Hello, World!"
       - run:
           name: "Test vars"
           command: "echo BASH_ENV=$BASH_ENV"
