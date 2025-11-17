@@ -19,9 +19,8 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run:
-        name:
-        command: |
-          echo BASH_ENV=$BASH_ENV
+        name: "script"
+        command: "echo BASH_ENV=$BASH_ENV"
       - run:
         command: |
           echo BASH_ENV=$BASH_ENV
