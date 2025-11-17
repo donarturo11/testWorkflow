@@ -55,6 +55,15 @@ jobs:
     - name: set up env
       run: |
        [[ ! -e out ]] && mkdir -vp out
+       case $(uname -s | tr '[A-Z]' '[a-z]') in
+       cygwin*|msys*|mingw*) OS_NAME=windows ;;
+       darwin*) OS_NAME=macos ;;
+       *) OS_NAME=$(uname -o | tr '[A-Z]' '[a-z]') ;;
+       esac
+       CARCH=${CARCH:-$(uname -m)}
+       CHOST=${CHOST:-$($(command -v gcc || command -v clang) -dumpmachine)}
+       echo CARCH=$CARCH
+       echo CHOST=$CHOST
     - if: ${{ matrix.msystem }}
       run: |
         echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
