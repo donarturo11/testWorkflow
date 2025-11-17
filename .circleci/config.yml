@@ -22,9 +22,10 @@ jobs:
         name:
         command: |
           echo BASH_ENV=$BASH_ENV
-      - run: |
-        echo BASH_ENV=$BASH_ENV
-        echo "Hello, World!"
+      - run:
+        command: |
+          echo BASH_ENV=$BASH_ENV
+          echo "Hello, World!"
       - run:
         name: "Test vars"
         command: "echo BASH_ENV=$BASH_ENV"
