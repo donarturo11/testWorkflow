@@ -117,6 +117,7 @@ jobs:
        done 
     - run: |
         cat $BASH_ENV    
+    - run: ( env > out/environment.env ) | true
     - name: Uploading
       uses: actions/upload-artifact@v4
       with:
