@@ -32,6 +32,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    - name: Check github
+      run: |
+        env | sort | grep '^GITHUB'
     - name: setup control artifacts
       run: |
         CWD=$(cd $RUNNER_WORKSPACE; pwd)
